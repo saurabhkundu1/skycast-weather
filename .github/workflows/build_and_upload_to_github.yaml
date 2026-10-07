@@ -63,4 +63,4 @@ jobs:
           file: ${{ steps.sign_release.outputs.signedReleaseFile }}
           body: ${{ env.CHANGELOG }}
           tag: ${{ env.VERSION_NAME }}
-          asset_name: bura-$tag.apk
+          asset_name: skycast-$tag.apk

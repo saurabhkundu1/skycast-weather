@@ -2,15 +2,15 @@
 <!--
   ~ Copyright 2024 David Takač
   ~
-  ~ This file is part of Bura.
+  ~ This file is part of Skycast.
   ~
-  ~ Bura is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~ Skycast is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
   ~
-  ~ Bura is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+  ~ Skycast is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
   ~
-  ~ You should have received a copy of the GNU General Public License along with Bura. If not, see <https://www.gnu.org/licenses/>.
+  ~ You should have received a copy of the GNU General Public License along with Skycast. If not, see <https://www.gnu.org/licenses/>.
   --><resources>
-    <string name="app_name">Bura</string>
+    <string name="app_name">Skycast</string>
     <string name="general_error_failed_to_download">Misslyckades med att ladda ner prognos. Anslut till internet och försök igen.</string>
     <string name="general_error_outdated">Dina prognosdata har utlöpt. Anslut till internet och försök igen.</string>
     <string name="general_error_no_selected_place">Ingen vald plats.</string>

@@ -1,0 +1,49 @@
+/*
+ * Copyright 2024 David Takač
+ *
+ * This file is part of Skycast.
+ *
+ * Skycast is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * Skycast is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with Skycast. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package com.applify.skycast.graphs.common
+
+import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
+import java.util.Objects
+
+class GraphTime(
+    val value: ZonedDateTime,
+    val meta: Meta
+) {
+    constructor(
+        hour: ZonedDateTime,
+        now: Instant
+    ) : this(value = hour, meta = getMeta(hour, now))
+
+    enum class Meta {
+        Past, Present, Future
+    }
+
+    override fun equals(other: Any?): Boolean =
+        other is GraphTime && other.value == value && other.meta == meta
+
+    override fun hashCode(): Int = Objects.hash(value, meta)
+
+    override fun toString(): String = "$value ($meta)"
+}
+
+private fun getMeta(hour: ZonedDateTime, now: Instant): GraphTime.Meta {
+    val nowTrunc = now.truncatedTo(ChronoUnit.HOURS)
+    val hourInstant = hour.toInstant()
+    return when {
+        hourInstant < nowTrunc -> GraphTime.Meta.Past
+        hourInstant == nowTrunc -> GraphTime.Meta.Present
+        else -> GraphTime.Meta.Future
+    }
+}

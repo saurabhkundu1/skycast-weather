@@ -1,13 +1,13 @@
 /*
  * Copyright 2024 David Takač
  *
- * This file is part of Bura.
+ * This file is part of Skycast.
  *
- * Bura is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Skycast is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  *
- * Bura is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * Skycast is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with Bura. If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with Skycast. If not, see <https://www.gnu.org/licenses/>.
  */
 
 plugins {
@@ -16,11 +16,11 @@ plugins {
 }
 
 android {
-    namespace = "com.davidtakac.bura"
+    namespace = "com.applify.skycast"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.davidtakac.bura"
+        applicationId = "com.applify.skycast"
         minSdk = 28
         versionCode = 19
         versionName = "1.9.0"

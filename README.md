@@ -1,36 +1,36 @@
-# Bura
+# Skycast
 Modern weather app with graphs and thoughtful data visualization. Spiritual successor to [Prognoza](https://github.com/davidtakac/prognoza).
 
 <div>
-    <a href="https://f-droid.org/packages/com.davidtakac.bura">
-        <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80", align="center"/>
+    <a href="https://fdroid.link/#https://saurabhkundu1.github.io/Applify/repo?fingerprint=DE62E0D386DB9B6FC616ADF6573F458AAC8D04F873007C73B8585FBEF0960255">
+        <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80" align="center"/>
     </a>
-    <a href="https://apt.izzysoft.de/fdroid/index/apk/com.davidtakac.bura">
+    <a href="https://saurabhkundu1.github.io/Applify/">
         <img src="assets/badge_izzyondroid.png" height="80" align="center"/>
     </a>
-    <a href="http://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/davidtakac/bura">
+    <a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/saurabhkundu1/skycast-weather">
         <img src="assets/badge_obtainium.png" height="80" align="center"/>
     </a>
-    <a href="https://github.com/davidtakac/bura/releases/latest">
+    <a href="https://github.com/saurabhkundu1/skycast-weather/releases/latest">
         <img src="assets/badge_github.png" height="80" align="center"/>
     </a>
 </div>
 
 ## Screenshots
 <p align="left">
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width=30%/>
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width=30%/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="30%"/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="30%"/>
     <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="30%"/>
 </p>
 
 <p align="left">
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width=30%/>
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width=30%/>
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width=30%/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="30%"/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="30%"/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="30%"/>
 </p>
 
 ## Features
-Bura transforms and visualizes weather data from Open-Meteo.com to give you essential weather information at a glance, while allowing you to dive deeper with graphs.
+Skycast transforms and visualizes weather data from Open-Meteo.com to give you essential weather information at a glance, while allowing you to dive deeper with graphs.
 
 Other features include:
 - Works offline
@@ -92,8 +92,8 @@ more complicated queries with multiple words, commas, etc. confuses the API.
 ## Credit
 - Forecast data by [Open-Meteo](https://open-meteo.com/) licensed under [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)  
 - Location data by [Open-Meteo](https://open-meteo.com/) licensed under [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)  
-- Sun, moon, sunrise and sunset icons adapted from [Feather icons](https://feathericons.com/)  licensed under the [MIT License](https://github.com/feathericons/feather/blob/main/LICENSE)  
+- Sun, moon, sunrise and sunset icons adapted from [Feather icons](https://feathericons.com/) licensed under the [MIT License](https://github.com/feathericons/feather/blob/main/LICENSE)  
 
 ## License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
-Bura is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+Skycast is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
