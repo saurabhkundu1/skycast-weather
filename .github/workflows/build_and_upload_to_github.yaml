@@ -50,16 +50,21 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v4
-        with:
-          packages: 'platform-tools build-tools;36.0.0'
+
+      - name: Install Android Build Tools
+        shell: bash
+        run: |
+          sdkmanager "platform-tools" "build-tools;36.0.0"
+          yes | sdkmanager --licenses > /dev/null || true
 
       - name: Verify Android Build Tools
         shell: bash
         run: |
-          echo "Android SDK: $ANDROID_HOME"
+          echo "Installed Build Tools:"
+          ls -la "$ANDROID_HOME/build-tools/"
           test -x "$ANDROID_HOME/build-tools/36.0.0/zipalign"
           test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner"
-          echo "Android Build Tools 36.0.0 are installed."
+          echo "Build Tools 36.0.0 verified."
 
       - name: Assemble release
         run: ./gradlew assembleRelease
