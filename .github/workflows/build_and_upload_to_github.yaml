@@ -48,36 +48,54 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      - name: Save installed BUILD_TOOLS_VERSION
+      - name: Decode Signing Keystore
         shell: bash
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          BUILD_TOOLS_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | grep -E '^(34|35)\.' | tail -n 1 || echo "35.0.0")
-          echo "BUILD_TOOLS_VERSION=$BUILD_TOOLS_VERSION" >> "$GITHUB_ENV"
-          echo "Using Android Build Tools: $BUILD_TOOLS_VERSION"
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::KEYSTORE_BASE64 secret is missing or empty! Please add KEYSTORE_BASE64 to GitHub Repository Secrets."
+            exit 1
+          fi
+          echo "$KEYSTORE_BASE64" | base64 --decode > app/release.keystore
+          if [ ! -s app/release.keystore ]; then
+            echo "::error::Decoded keystore file is empty! Check KEYSTORE_BASE64 secret."
+            exit 1
+          fi
+          echo "Keystore successfully decoded to app/release.keystore."
+
+      - name: Validate Keystore Credentials
+        shell: bash
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+        run: |
+          if [ -z "$KEYSTORE_PASSWORD" ]; then
+            echo "::error::KEYSTORE_PASSWORD secret is missing or empty! Please add KEYSTORE_PASSWORD to GitHub Repository Secrets."
+            exit 1
+          fi
+          if [ -z "$KEYSTORE_ALIAS" ]; then
+            echo "::error::KEYSTORE_ALIAS secret is missing or empty! Please add KEYSTORE_ALIAS to GitHub Repository Secrets."
+            exit 1
+          fi
+          echo "Keystore credentials verified."
 
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Assemble release
-        run: ./gradlew assembleRelease
-
-      - name: Sign release
-        uses: r0adkll/sign-android-release@v1
-        id: sign_release
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
-          alias: ${{ secrets.KEYSTORE_ALIAS }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - name: Assemble Release APK (Signed via Gradle)
         env:
-          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOLS_VERSION }}
+          KEYSTORE_FILE_PATH: release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease
 
       - name: Upload APK to GitHub release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ steps.sign_release.outputs.signedReleaseFile }}
+          file: app/build/outputs/apk/release/app-release.apk
           body: ${{ env.CHANGELOG }}
           tag: ${{ github.ref_name }}
           asset_name: skycast-${{ env.VERSION_NAME }}.apk

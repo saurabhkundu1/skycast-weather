@@ -49,11 +49,28 @@ android {
         )
     }
 
+    signingConfigs {
+        create("release") {
+            val storeFilePath = System.getenv("KEYSTORE_FILE_PATH") ?: "release.keystore"
+            val storeFileObj = file(storeFilePath)
+            if (storeFileObj.exists()) {
+                storeFile = storeFileObj
+                storePassword = System.getenv("KEYSTORE_PASSWORD") ?: System.getenv("KEY_STORE_PASSWORD") ?: ""
+                keyAlias = System.getenv("KEYSTORE_ALIAS") ?: System.getenv("KEY_ALIAS") ?: ""
+                keyPassword = System.getenv("KEY_PASSWORD") ?: storePassword
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
         }
         release {
+            val storeFilePath = System.getenv("KEYSTORE_FILE_PATH") ?: "release.keystore"
+            if (file(storeFilePath).exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(
