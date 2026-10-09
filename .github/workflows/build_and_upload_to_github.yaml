@@ -1,4 +1,3 @@
-```yaml
 name: Build, sign and upload to GitHub Releases
 
 on:
@@ -38,7 +37,7 @@ jobs:
         run: |
           {
             echo 'CHANGELOG<<EOF'
-            cat "fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
+            cat "fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt" 2>/dev/null || echo "Release ${VERSION_NAME}"
             echo EOF
           } >> "$GITHUB_ENV"
 
@@ -47,24 +46,17 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+          cache: gradle
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
-
-      - name: Install Android Build Tools
+      - name: Save installed BUILD_TOOLS_VERSION
         shell: bash
         run: |
-          sdkmanager "platform-tools" "build-tools;36.0.0"
-          yes | sdkmanager --licenses > /dev/null || true
+          BUILD_TOOLS_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | grep -E '^(34|35)\.' | tail -n 1 || echo "35.0.0")
+          echo "BUILD_TOOLS_VERSION=$BUILD_TOOLS_VERSION" >> "$GITHUB_ENV"
+          echo "Using Android Build Tools: $BUILD_TOOLS_VERSION"
 
-      - name: Verify Android Build Tools
-        shell: bash
-        run: |
-          echo "Installed Build Tools:"
-          ls -la "$ANDROID_HOME/build-tools/"
-          test -x "$ANDROID_HOME/build-tools/36.0.0/zipalign"
-          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner"
-          echo "Build Tools 36.0.0 verified."
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
       - name: Assemble release
         run: ./gradlew assembleRelease
@@ -79,7 +71,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: '36.0.0'
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOLS_VERSION }}
 
       - name: Upload APK to GitHub release
         uses: svenstaro/upload-release-action@v2
@@ -87,6 +79,5 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ steps.sign_release.outputs.signedReleaseFile }}
           body: ${{ env.CHANGELOG }}
-          tag: ${{ env.VERSION_NAME }}
+          tag: ${{ github.ref_name }}
           asset_name: skycast-${{ env.VERSION_NAME }}.apk
-```
