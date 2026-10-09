@@ -43,7 +43,7 @@ jobs:
       - name: Save installed BUILD_TOOL_VERSION
         shell: bash
         run: |
-          BUILD_TOOL_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+          BUILD_TOOL_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | grep -E '^(34|35)\.' | tail -n 1 || echo "34.0.0")
           echo "BUILD_TOOL_VERSION=$BUILD_TOOL_VERSION" >> $GITHUB_ENV
           echo "Installed BUILD_TOOL_VERSION is: $BUILD_TOOL_VERSION"
       - name: Sign release
