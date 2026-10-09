@@ -40,12 +40,12 @@ jobs:
       - name: Assemble release
         run: ./gradlew assembleRelease
       # See https://github.com/r0adkll/sign-android-release/issues/84
-      - name: Save installed BUILD_TOOL_VERSION
+      - name: Save installed BUILD_TOOLS_VERSION
         shell: bash
         run: |
-          BUILD_TOOL_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | grep -E '^(34|35)\.' | tail -n 1 || echo "34.0.0")
-          echo "BUILD_TOOL_VERSION=$BUILD_TOOL_VERSION" >> $GITHUB_ENV
-          echo "Installed BUILD_TOOL_VERSION is: $BUILD_TOOL_VERSION"
+          BUILD_TOOLS_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | grep -v '^37' | tail -n 1)
+          echo "BUILD_TOOLS_VERSION=$BUILD_TOOLS_VERSION" >> $GITHUB_ENV
+          echo "Installed BUILD_TOOLS_VERSION is: $BUILD_TOOLS_VERSION"
       - name: Sign release
         uses: r0adkll/sign-android-release@v1
         id: sign_release
@@ -55,7 +55,8 @@ jobs:
           alias: ${{ secrets.KEYSTORE_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
-          buildToolsVersion: ${{ env.BUILD_TOOL_VERSION }}
+        env:
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOLS_VERSION }}
       - name: Upload APK to GitHub release
         uses: svenstaro/upload-release-action@v2
         with:
