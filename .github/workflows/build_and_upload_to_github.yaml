@@ -1,3 +1,4 @@
+```yaml
 name: Build, sign and upload to GitHub Releases
 
 on:
@@ -6,6 +7,9 @@ on:
       - '*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build, sign and upload to GitHub Releases
@@ -13,39 +17,53 @@ jobs:
 
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
       - name: Save version name
+        shell: bash
         run: |
-          echo 'VERSION_NAME<<EOF' >> $GITHUB_ENV
-          grep versionName app/build.gradle.kts | cut -d \" -f2 | cut -d \" -f1 >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          echo 'VERSION_NAME<<EOF' >> "$GITHUB_ENV"
+          grep versionName app/build.gradle.kts | cut -d '"' -f2 | head -n 1 >> "$GITHUB_ENV"
+          echo 'EOF' >> "$GITHUB_ENV"
+
       - name: Save version code
+        shell: bash
         run: |
-          echo 'VERSION_CODE<<EOF' >> $GITHUB_ENV
-          grep versionCode app/build.gradle.kts | grep -Eo '[0-9]+' | tail -1 >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-      # See https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-of-a-multiline-string
+          echo 'VERSION_CODE<<EOF' >> "$GITHUB_ENV"
+          grep versionCode app/build.gradle.kts | grep -Eo '[0-9]+' | tail -n 1 >> "$GITHUB_ENV"
+          echo 'EOF' >> "$GITHUB_ENV"
+
       - name: Save changelog
+        shell: bash
         run: |
           {
             echo 'CHANGELOG<<EOF'
-            cat fastlane/metadata/android/en-US/changelogs/${{ env.VERSION_CODE }}.txt
+            cat "fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
             echo EOF
-          } >> $GITHUB_ENV
+          } >> "$GITHUB_ENV"
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '21'
-      - name: Assemble release
-        run: ./gradlew assembleRelease
-      # See https://github.com/r0adkll/sign-android-release/issues/84
-      - name: Save installed BUILD_TOOLS_VERSION
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools build-tools;36.0.0'
+
+      - name: Verify Android Build Tools
         shell: bash
         run: |
-          BUILD_TOOLS_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | grep -v '^37' | tail -n 1)
-          echo "BUILD_TOOLS_VERSION=$BUILD_TOOLS_VERSION" >> $GITHUB_ENV
-          echo "Installed BUILD_TOOLS_VERSION is: $BUILD_TOOLS_VERSION"
+          echo "Android SDK: $ANDROID_HOME"
+          test -x "$ANDROID_HOME/build-tools/36.0.0/zipalign"
+          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner"
+          echo "Android Build Tools 36.0.0 are installed."
+
+      - name: Assemble release
+        run: ./gradlew assembleRelease
+
       - name: Sign release
         uses: r0adkll/sign-android-release@v1
         id: sign_release
@@ -56,11 +74,14 @@ jobs:
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOLS_VERSION }}
+          BUILD_TOOLS_VERSION: '36.0.0'
+
       - name: Upload APK to GitHub release
         uses: svenstaro/upload-release-action@v2
         with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ steps.sign_release.outputs.signedReleaseFile }}
           body: ${{ env.CHANGELOG }}
           tag: ${{ env.VERSION_NAME }}
-          asset_name: skycast-$tag.apk
+          asset_name: skycast-${{ env.VERSION_NAME }}.apk
+```
