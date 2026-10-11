@@ -3,6 +3,7 @@ name: Build, sign and upload to GitHub Releases
 on:
   push:
     tags:
+      - 'Skycast-*'
       - '*'
   workflow_dispatch:
 
@@ -35,9 +36,20 @@ jobs:
       - name: Save changelog
         shell: bash
         run: |
+          CHANGELOG_CONTENT=""
+          if [ -f "fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt" ]; then
+            CHANGELOG_CONTENT=$(cat "fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt")
+          else
+            CHANGELOG_CONTENT="Release Skycast-${VERSION_NAME}"
+          fi
+          
           {
             echo 'CHANGELOG<<EOF'
-            cat "fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt" 2>/dev/null || echo "Release ${VERSION_NAME}"
+            echo "$CHANGELOG_CONTENT"
+            echo ""
+            echo "---"
+            echo "🌐 **GitHub Page**: https://saurabhkundu1.github.io/Applify/"
+            echo "📱 **F-Droid Repo**: https://saurabhkundu1.github.io/Applify/repo"
             echo EOF
           } >> "$GITHUB_ENV"
 
@@ -92,5 +104,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.APK_PATH }}
           body: ${{ env.CHANGELOG }}
-          tag: ${{ github.ref_name }}
+          tag: ${{ github.ref_type == 'tag' && github.ref_name || format('Skycast-{0}', env.VERSION_NAME) }}
+          release_name: Skycast-${{ env.VERSION_NAME }}
           asset_name: skycast-${{ env.VERSION_NAME }}.apk

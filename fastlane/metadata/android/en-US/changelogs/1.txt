@@ -1,4 +1,12 @@
-## 1.0.0 - 2024-03-29
+# Skycast 1.0.0 Initial Release 🎉
 
-### Added
-- First release
+Welcome to the initial release of **Skycast** – a modern, privacy-first weather app with thoughtful data visualization for Android!
+
+### 🌟 Key Features
+- **Weather Data**: Powered by Open-Meteo.com with no API keys required.
+- **Privacy First**: Zero tracking, no location permissions needed (searches via geocoding).
+- **Interactive Graphs**: Temperature trends with feels-like comparison, precipitation totals, and probability of precipitation (PoP).
+- **Essential Metrics**: Hourly & 7-day daily forecasts, wind speed/direction/gusts, UV index, humidity, pressure, visibility, and sunrise/sunset tracking.
+- **Material Design 3**: Full support for Dynamic Color (Material You), Light and Dark themes.
+- **Offline & Lightweight**: Fast local caching and minimal mobile data usage.
+- **Customizable**: Measurement units (Celsius/Fahrenheit, km/h, mph, hPa, etc.) and multilingual support (15+ languages).

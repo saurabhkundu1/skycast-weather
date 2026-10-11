@@ -1,99 +1,199 @@
-# Skycast
-Modern weather app with graphs and thoughtful data visualization. Spiritual successor to [Prognoza](https://github.com/davidtakac/prognoza).
+# Skycast 🌦️
 
-<div>
+Modern weather app with graphs and thoughtful data visualization for Android. Spiritual successor to [Prognoza](https://github.com/davidtakac/prognoza).
+
+<div align="center">
     <a href="https://fdroid.link/#https://saurabhkundu1.github.io/Applify/repo?fingerprint=DE62E0D386DB9B6FC616ADF6573F458AAC8D04F873007C73B8585FBEF0960255">
-        <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="80" align="center"/>
+        <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="70" alt="Get it on F-Droid"/>
     </a>
     <a href="https://saurabhkundu1.github.io/Applify/">
-        <img src="assets/badge_izzyondroid.png" height="80" align="center"/>
+        <img src="assets/badge_izzyondroid.png" height="70" alt="IzzyOnDroid"/>
     </a>
     <a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/saurabhkundu1/skycast-weather">
-        <img src="assets/badge_obtainium.png" height="80" align="center"/>
+        <img src="assets/badge_obtainium.png" height="70" alt="Get it on Obtainium"/>
     </a>
     <a href="https://github.com/saurabhkundu1/skycast-weather/releases/latest">
-        <img src="assets/badge_github.png" height="80" align="center"/>
+        <img src="assets/badge_github.png" height="70" alt="GitHub Releases"/>
     </a>
 </div>
 
-## Screenshots
-<p align="left">
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="30%"/>
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="30%"/>
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="30%"/>
+<p align="center">
+    <a href="https://github.com/saurabhkundu1/skycast-weather/actions/workflows/build_and_upload.yml">
+        <img src="https://img.shields.io/github/actions/workflow/status/saurabhkundu1/skycast-weather/build_and_upload.yml?style=flat-square&label=Build" alt="Build Status"/>
+    </a>
+    <a href="https://github.com/saurabhkundu1/skycast-weather/releases/latest">
+        <img src="https://img.shields.io/github/v/release/saurabhkundu1/skycast-weather?style=flat-square&label=Latest%20Release" alt="Latest Release"/>
+    </a>
+    <a href="LICENSE.txt">
+        <img src="https://img.shields.io/github/license/saurabhkundu1/skycast-weather?style=flat-square&color=blue" alt="License: GPL-3.0"/>
+    </a>
+    <a href="https://hosted.weblate.org/projects/bura/">
+        <img src="https://img.shields.io/weblate/status/bura?style=flat-square&label=Translations" alt="Weblate Translation Status"/>
+    </a>
 </p>
 
-<p align="left">
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="30%"/>
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="30%"/>
-    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="30%"/>
+---
+
+## 🌟 Overview
+
+**Skycast** transforms and visualizes weather data from [Open-Meteo.com](https://open-meteo.com) to provide essential weather information at a glance, while allowing you to dive deeper through elegant interactive graphs and rich metrics.
+
+Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lightweight weather experience without tracking, ads, or requiring unnecessary device permissions.
+
+---
+
+## 📱 Screenshots
+
+<p align="center">
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" width="31%" alt="Overview Screen"/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" width="31%" alt="Detailed Metrics"/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" width="31%" alt="Weather Graphs"/>
 </p>
 
-## Features
-Skycast transforms and visualizes weather data from Open-Meteo.com to give you essential weather information at a glance, while allowing you to dive deeper with graphs.
+<p align="center">
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" width="31%" alt="Graphs Page"/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" width="31%" alt="Dark Theme"/>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="31%" alt="Settings Screen"/>
+</p>
 
-Other features include:
-- Works offline
-- Uses mobile data sparingly
-- Does not require an API key
-- Does not access your location
-- Material Design 3 / Material You
-- Dark and light theme
-- Customizable measurement units
+---
 
-## Will be implemented
-Sorted by priority:
+## ✨ Features
 
-1. Graphs
-   1. ~~Precipitation~~
-   2. UV index
-   3. Wind
-   4. Pressure
-   5. Humidity
-   6. Visibility
-   7. Feels like
-2. Air quality
-   1. Home screen tiles
-   2. Graphs
-3. Weather alerts
-4. Home screen widgets
-5. Notification widgets
-6. Customizable [Open-Meteo data sources](https://open-meteo.com/en/docs#data-sources)
+- 🔒 **Privacy-First Design**: Does not access your device location (searches locations via Open-Meteo geocoding API).
+- 🔑 **No API Key Required**: Ready to use right out of the box with zero setup.
+- 📴 **Offline Support**: Caches weather data locally for offline viewing and instant startup.
+- 📡 **Data Efficient**: Minimal network usage, optimized data fetching and bandwidth saving.
+- 🎨 **Material You / Material Design 3**: Modern interface supporting Dynamic Color (Android 12+), Light, and Dark themes.
+- 📊 **Rich Weather Graphs**:
+  - Temperature trends with "Feels like" comparison and day/night transitions.
+  - Probability of Precipitation (PoP) graphs.
+  - Precipitation amounts and totals.
+- 🌡️ **Detailed Weather Metrics**:
+  - Current & Hourly forecasts (with sun position tracking).
+  - 7-day daily forecast with intuitive colored temperature range bars.
+  - Feels-like temperature calculations.
+  - Precipitation intensity, accumulative totals, and probability.
+  - Wind speed, direction, and gust tracking.
+  - UV Index levels with protection advisories.
+  - Humidity levels & Dew point calculations.
+  - Atmospheric pressure and pressure tendencies.
+  - Visibility distances.
+  - Sunrise, sunset, and daylight duration.
+- 📐 **Customizable Units**: Choose preferred units for temperature, wind speed, pressure, precipitation, and visibility.
+- 🌐 **Multilingual Support**: Available in 15+ languages including English, Spanish, French, German, Russian, Vietnamese, Croatian, Chinese (Simplified & Traditional), Polish, Swedish, Dutch, Arabic, Czech, and Greek.
 
-## Will not be implemented
-Issues requesting these features will be closed as not planned:
+---
 
-- Manual refresh
-- Customizable refresh period
-- Other weather sources
-- OLED dark theme
+## 🛠️ Tech Stack & Architecture
 
-## Translations
-To contribute translations, use [Weblate](https://hosted.weblate.org/projects/bura/).
+- **Language**: [Kotlin](https://kotlinlang.org/) (100%)
+- **UI Framework**: [Jetpack Compose](https://developer.android.com/jetpack/compose) with Material Design 3
+- **Navigation**: Navigation Compose
+- **Architecture**: Unidirectional Data Flow (UDF) with `ViewModel`, `StateFlow`, and Kotlin Coroutines
+- **Build Tool**: Gradle (Kotlin DSL) with Android Gradle Plugin 9.x & JDK 21
+- **Data Source**: [Open-Meteo API](https://open-meteo.com/) (Forecast & Geocoding APIs)
+- **CI/CD**: GitHub Actions for automated build, signing, and artifact publication
 
-## Contributions
-Before you start working on a contribution, please open an issue (if one is not already opened) and
-describe the problem and your proposed solution. After we agree, you may open a PR. That way you 
-won't waste time working on something that may not be merged if it conflicts with the project.
+---
 
-## Donations
-I do not accept donations at the moment.
+## 🗺️ Roadmap
 
-## FAQ
+### Planned / In Progress
+1. **Graphs**
+   - [x] Precipitation
+   - [x] Temperature
+   - [x] Probability of Precipitation (PoP)
+   - [ ] UV Index
+   - [ ] Wind
+   - [ ] Pressure
+   - [ ] Humidity
+   - [ ] Visibility
+   - [ ] Feels like
+2. **Air Quality**
+   - [ ] Home screen tiles
+   - [ ] Air quality graphs
+3. **Weather Alerts**
+4. **Home Screen Widgets**
+5. **Notification Widgets**
+6. **Customizable Open-Meteo Data Sources**
 
-### Meaning of the colored temperature bar?
-The extreme ends of the spectrum are the full temperature range of the week. The colored bar is the temperature range for that day, and the dot is the current temperature.
+### Non-Goals (Will Not Be Implemented)
+To keep Skycast focused and lean, issues requesting these features will be closed as *not planned*:
+- Manual refresh button
+- Customizable refresh interval
+- Alternative weather API providers
+- OLED pure-black dark theme
+
+---
+
+## 🏗️ Building from Source
+
+### Prerequisites
+- [Android Studio Ladybug (or newer)](https://developer.android.com/studio)
+- JDK 21
+- Android SDK 35+
+
+### Steps
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/saurabhkundu1/skycast-weather.git
+   cd skycast-weather
+   ```
+
+2. **Build debug APK:**
+   ```bash
+   ./gradlew assembleDebug
+   ```
+
+3. **Install on connected device:**
+   ```bash
+   ./gradlew installDebug
+   ```
+
+---
+
+## 🌍 Translations
+
+Translations are managed via Weblate. Contributions are always welcome!
+
+<a href="https://hosted.weblate.org/projects/bura/">
+    <img src="https://hosted.weblate.org/widgets/bura/-/multi-auto.svg" alt="Translation status"/>
+</a>
+
+Help translate Skycast into your language on [Weblate](https://hosted.weblate.org/projects/bura/).
+
+---
+
+## 🤝 Contributions
+
+Contributions are welcome! Before starting work on a non-trivial change or new feature, please open an issue to discuss the proposed solution.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## ❓ FAQ
+
+### What does the colored temperature bar mean?
+The extremes of the outer background spectrum represent the full temperature range of the entire week. The inner colored bar shows the min-to-max temperature range for that specific day, and the white dot indicates the current temperature.
 
 ### I can't find my location!
-The Open-Meteo geocoding API is a bit particular. I've found it is often better to enter a simple, 
-single-word, generic search term like "Berlin" and then choose from the list of results. Entering
-more complicated queries with multiple words, commas, etc. confuses the API.
+The Open-Meteo geocoding API works best with clean, single-word search terms (e.g., `Berlin` or `Tokyo`). Avoid extra punctuation, postal codes, or multi-word region qualifiers in the search field.
 
-## Credit
-- Forecast data by [Open-Meteo](https://open-meteo.com/) licensed under [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)  
-- Location data by [Open-Meteo](https://open-meteo.com/) licensed under [Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)  
-- Sun, moon, sunrise and sunset icons adapted from [Feather icons](https://feathericons.com/) licensed under the [MIT License](https://github.com/feathericons/feather/blob/main/LICENSE)  
+---
 
-## License
-[![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
-Skycast is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+## 📜 Credits & License
+
+- **Forecast & Location Data**: Provided by [Open-Meteo](https://open-meteo.com/) (Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))
+- **Icons**: Sun, moon, sunrise, and sunset icons adapted from [Feather Icons](https://feathericons.com/) (Licensed under [MIT License](https://github.com/feathericons/feather/blob/main/LICENSE))
+
+### License
+Skycast is free software licensed under the **GNU General Public License v3.0**. See the [LICENSE.txt](LICENSE.txt) file for details.
+
+[![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
