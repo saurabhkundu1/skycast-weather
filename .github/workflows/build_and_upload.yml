@@ -107,3 +107,18 @@ jobs:
           tag: ${{ github.ref_type == 'tag' && github.ref_name || format('Skycast-{0}', env.VERSION_NAME) }}
           release_name: Skycast-${{ env.VERSION_NAME }}
           asset_name: skycast-${{ env.VERSION_NAME }}.apk
+
+      - name: Notify Applify F-Droid Repo
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN }}
+        run: |
+          if [ -n "$PAT_TOKEN" ]; then
+            curl -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token $PAT_TOKEN" \
+              https://api.github.com/repos/saurabhkundu1/Applify/dispatches \
+              -d '{"event_type": "new_release", "client_payload": {"app": "com.applify.skycast", "version": "'"${VERSION_NAME}"'", "version_code": "'"${VERSION_CODE}"'"}}'
+            echo "Dispatched new_release event to Applify repository."
+          else
+            echo "PAT_TOKEN not found. Skipping repository_dispatch to Applify."
+          fi
