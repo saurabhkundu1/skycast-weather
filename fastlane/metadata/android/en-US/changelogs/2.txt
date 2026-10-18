@@ -1,1 +1,0 @@
-Skycast 1.1.0 adds WeatherAPI.com as an optional weather service. Open-Meteo remains available without a key. To use WeatherAPI.com, add your own API key in Settings; it is encrypted with Android Keystore on this device. Forecasts show provider attribution and a safety disclaimer.
