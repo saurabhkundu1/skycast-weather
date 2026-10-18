@@ -12,12 +12,17 @@
 
 package com.applify.skycast.places.picker.compose
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,13 +39,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.applify.skycast.R
 import com.applify.skycast.places.Place
+import com.applify.skycast.places.picker.PlacePickerLocationError
 import com.applify.skycast.places.picker.PlacePickerResults
 import com.applify.skycast.places.picker.PlacePickerState
 import com.applify.skycast.places.saved.compose.SavedPlaces
@@ -91,9 +100,17 @@ fun PlacePickerSearchBar(
     onPlaceClick: (Place) -> Unit,
     onSearchedPlaceClick: (SearchedPlace) -> Unit,
     onPlaceDeleteClick: (Place) -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
+    onUseCurrentLocation: () -> Unit,
+    onLocationPermissionDenied: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
+    val context = LocalContext.current
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) onUseCurrentLocation() else onLocationPermissionDenied()
+    }
     LaunchedEffect(active) {
         if (active) focusRequester.requestFocus()
         else focusRequester.freeFocus()
@@ -135,21 +152,59 @@ fun PlacePickerSearchBar(
             .padding(horizontal = horizontalPadding)
             .focusRequester(focusRequester)
     ) {
-        when (state.results) {
-            is PlacePickerResults.SavedPlaces ->
-                SavedPlaces(
-                    state = state.results,
-                    loading = state.loading,
-                    onPlaceClick = onPlaceClick,
-                    onPlaceDeleteClick = onPlaceDeleteClick
+        Column {
+            TextButton(
+                onClick = {
+                    if (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        onUseCurrentLocation()
+                    } else {
+                        locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    }
+                },
+                enabled = !state.loading,
+                modifier = Modifier.padding(start = 8.dp),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.location_on),
+                    contentDescription = null,
                 )
-            is PlacePickerResults.SearchedPlaces ->
-                SearchedPlaces(
-                    state = state.results,
-                    loading = state.loading,
-                    onPlaceClick = onSearchedPlaceClick
+                Text(
+                    text = stringResource(R.string.place_picker_use_current_location),
+                    modifier = Modifier.padding(start = 8.dp),
                 )
-            else -> Unit
+            }
+            state.locationError?.let { error ->
+                Text(
+                    text = stringResource(
+                        when (error) {
+                            PlacePickerLocationError.PermissionDenied -> R.string.place_picker_location_permission_denied
+                            PlacePickerLocationError.Unavailable -> R.string.place_picker_location_unavailable
+                        }
+                    ),
+                    style = androidx.compose.material3.MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                )
+            }
+            when (state.results) {
+                is PlacePickerResults.SavedPlaces ->
+                    SavedPlaces(
+                        state = state.results,
+                        loading = state.loading,
+                        onPlaceClick = onPlaceClick,
+                        onPlaceDeleteClick = onPlaceDeleteClick
+                    )
+                is PlacePickerResults.SearchedPlaces ->
+                    SearchedPlaces(
+                        state = state.results,
+                        loading = state.loading,
+                        onPlaceClick = onSearchedPlaceClick
+                    )
+                else -> Unit
+            }
         }
     }
 }

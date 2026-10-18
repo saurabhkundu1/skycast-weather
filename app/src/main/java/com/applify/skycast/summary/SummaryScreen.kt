@@ -75,6 +75,8 @@ fun SummaryScreen(
     onPlaceClick: (Place) -> Unit,
     onSearchedPlaceClick: (SearchedPlace) -> Unit,
     onPlaceDeleteClick: (Place) -> Unit,
+    onUseCurrentLocation: () -> Unit,
+    onLocationPermissionDenied: () -> Unit,
 
     onTryAgainClick: () -> Unit,
     onSelectPlaceClick: () -> Unit,
@@ -93,6 +95,8 @@ fun SummaryScreen(
                 active = searchActive,
                 onActiveChange = onSearchActiveChange,
                 onSettingsClick = onSettingsButtonClick,
+                onUseCurrentLocation = onUseCurrentLocation,
+                onLocationPermissionDenied = onLocationPermissionDenied,
             )
         }
     ) { contentPadding ->

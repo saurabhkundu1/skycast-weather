@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.applify.skycast.App
 import com.applify.skycast.common.util.launchCatching
 import com.applify.skycast.places.Place
+import com.applify.skycast.places.location.CurrentLocationProvider
 import com.applify.skycast.places.saved.DeletePlace
 import com.applify.skycast.places.saved.GetSavedPlaces
 import com.applify.skycast.places.saved.SavedPlace
@@ -37,6 +38,7 @@ class PlacePickerViewModel(
     private val selectPlace: SelectPlace,
     private val getSavedPlaces: GetSavedPlaces,
     private val searchPlaces: SearchPlaces,
+    private val currentLocationProvider: CurrentLocationProvider,
     private val deletePlace: DeletePlace,
     private val unexpectedErrorSetter: UnexpectedErrorSetter,
 ) : ViewModel() {
@@ -94,6 +96,25 @@ class PlacePickerViewModel(
         }
     }
 
+    fun useCurrentLocation() {
+        viewModelScope.launchCatching(unexpectedErrorSetter) {
+            _state.value = _state.value.copy(loading = true, locationError = null)
+            val place = currentLocationProvider.getCurrentPlace()
+            if (place == null) {
+                _state.value = _state.value.copy(
+                    loading = false,
+                    locationError = PlacePickerLocationError.Unavailable,
+                )
+            } else {
+                _selectPlace(place)
+            }
+        }
+    }
+
+    fun onLocationPermissionDenied() {
+        _state.value = _state.value.copy(locationError = PlacePickerLocationError.PermissionDenied)
+    }
+
     fun deletePlace(place: Place) {
         viewModelScope.launchCatching(unexpectedErrorSetter) {
             _state.value = _state.value.copy(loading = true)
@@ -113,8 +134,10 @@ class PlacePickerViewModel(
         selectPlace.invoke(place)
         _state.value = _state.value.copy(
             query = place.name,
+            loading = false,
             active = false,
             searchedPlaceToEdit = null,
+            locationError = null,
             results = null,
         )
     }
@@ -153,6 +176,7 @@ class PlacePickerViewModel(
                     container.selectPlace,
                     container.getSavedPlaces,
                     container.searchPlaces,
+                    container.currentLocationProvider,
                     container.deletePlace,
                     container.unexpectedErrorSetter
                 ) as T
@@ -166,8 +190,14 @@ data class PlacePickerState(
     val query: String = "",
     val active: Boolean = false,
     val searchedPlaceToEdit: SearchedPlace? = null,
+    val locationError: PlacePickerLocationError? = null,
     val results: PlacePickerResults? = null
 )
+
+enum class PlacePickerLocationError {
+    PermissionDenied,
+    Unavailable,
+}
 
 sealed interface PlacePickerResults {
     data class SavedPlaces(val places: List<SavedPlace>) : PlacePickerResults

@@ -33,7 +33,11 @@ abstract class HourPeriod<T : Moment>(private val moments: List<T>) : AbstractLi
 
     fun momentsUntil(hourExclusive: Instant, takeLast: Int? = null): List<T>? {
         require(takeLast == null || takeLast > 0) { "Take moments must either be null or positive." }
-        val instantAtHourBefore = hourExclusive.truncatedTo(ChronoUnit.HOURS).minus(1, ChronoUnit.HOURS)
+        val instantAtHourBefore = hourExclusive
+            .atZone(moments[0].timeZdt.zone)
+            .truncatedTo(ChronoUnit.HOURS)
+            .minusHours(1)
+            .toInstant()
         val indexOfHour = moments.indexOfFirst { it.timeInstant == instantAtHourBefore }
         return if (indexOfHour < 0) null else moments
             .slice(0..indexOfHour)
@@ -42,7 +46,10 @@ abstract class HourPeriod<T : Moment>(private val moments: List<T>) : AbstractLi
 
     fun momentsFrom(hourInclusive: Instant, take: Int? = null): List<T>? {
         require(take == null || take > 0) { "Take moments must either be null or positive." }
-        val instantAtHour = hourInclusive.truncatedTo(ChronoUnit.HOURS)
+        val instantAtHour = hourInclusive
+            .atZone(moments[0].timeZdt.zone)
+            .truncatedTo(ChronoUnit.HOURS)
+            .toInstant()
         val indexOfHour = moments.indexOfFirst { it.timeInstant == instantAtHour }
         return if (indexOfHour < 0) null else moments
             .subList(indexOfHour, moments.size)

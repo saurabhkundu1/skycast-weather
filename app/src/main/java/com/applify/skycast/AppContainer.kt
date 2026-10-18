@@ -24,6 +24,7 @@ import com.applify.skycast.forecast.units.SelectedUnitsRepository
 import com.applify.skycast.places.saved.DeletePlace
 import com.applify.skycast.places.saved.GetSavedPlaces
 import com.applify.skycast.places.saved.SavedPlacesRepository
+import com.applify.skycast.places.location.CurrentLocationProvider
 import com.applify.skycast.places.search.SearchPlaces
 import com.applify.skycast.places.selected.SelectPlace
 import com.applify.skycast.places.selected.SelectedPlaceRepository
@@ -61,6 +62,7 @@ class AppContainer(private val appContext: Context) {
     private val savedPlacesRepo by lazy { SavedPlacesRepository(root) }
     val getSavedPlaces get() = GetSavedPlaces(selectedUnitsRepo, selectedPlaceRepo, savedPlacesRepo, forecastRepo)
     val searchPlaces get() = SearchPlaces(userAgent)
+    val currentLocationProvider get() = CurrentLocationProvider(appContext, userAgent)
     val selectPlace get() = SelectPlace(selectedPlaceRepo, savedPlacesRepo)
     val deletePlace get() = DeletePlace(savedPlacesRepo, forecastCacher)
 }

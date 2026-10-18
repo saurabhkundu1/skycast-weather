@@ -76,6 +76,8 @@ fun SummaryDestination(
         onPlaceClick = placePickerVM::selectPlace,
         onSearchedPlaceClick = placePickerVM::selectSearchedPlace,
         onPlaceDeleteClick = placePickerVM::deletePlace,
+        onUseCurrentLocation = placePickerVM::useCurrentLocation,
+        onLocationPermissionDenied = placePickerVM::onLocationPermissionDenied,
 
         onTryAgainClick = summaryVM::getSummary,
         onSelectPlaceClick = { placePickerVM.setActive(true) }

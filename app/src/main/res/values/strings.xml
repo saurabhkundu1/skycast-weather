@@ -24,6 +24,10 @@
     <string name="credit_geocoding">Geocoding data by Open-Meteo.com</string>
 
     <string name="place_picker_hint_search">Search places…</string>
+    <string name="place_picker_use_current_location">Use current location</string>
+    <string name="place_picker_current_location">Current location</string>
+    <string name="place_picker_location_permission_denied">Location permission was denied. You can still search for a city manually.</string>
+    <string name="place_picker_location_unavailable">Could not determine your location. Check that Location is enabled, or search for a city manually.</string>
     <string name="place_picker_title_saved_places">Saved places</string>
     <string name="place_picker_title_search_results">Search results</string>
     <string name="place_picker_error_no_internet">You seem to be offline. Connect to the Internet and try again.</string>
