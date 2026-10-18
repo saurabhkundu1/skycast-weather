@@ -159,7 +159,7 @@ fun EssentialGraphPage(
         }
         item {
             Text(
-                text = stringResource(id = R.string.credit_weather),
+                text = stringResource(id = R.string.credit_weather) + "\n" + stringResource(id = R.string.weather_data_disclaimer),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

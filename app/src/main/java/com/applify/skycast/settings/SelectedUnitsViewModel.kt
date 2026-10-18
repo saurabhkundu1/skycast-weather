@@ -24,18 +24,54 @@ import com.applify.skycast.forecast.units.SelectedUnitsRepository
 import com.applify.skycast.forecast.units.Units
 import com.applify.skycast.forecast.parameters.visibility.Visibility
 import com.applify.skycast.forecast.parameters.wind.WindSpeed
+import com.applify.skycast.forecast.download.WeatherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SelectedUnitsViewModel(private val repo: SelectedUnitsRepository) : ViewModel() {
+class SelectedUnitsViewModel(
+    private val repo: SelectedUnitsRepository,
+    private val weatherProviderRepo: WeatherProviderRepository
+) : ViewModel() {
     private val _state = MutableStateFlow<Units?>(null)
     val state: StateFlow<Units?> = _state.asStateFlow()
+    private val _weatherProvider = MutableStateFlow(WeatherProvider.OpenMeteo)
+    val weatherProvider: StateFlow<WeatherProvider> = _weatherProvider.asStateFlow()
+    private val _weatherApiKeyConfigured = MutableStateFlow(false)
+    val weatherApiKeyConfigured: StateFlow<Boolean> = _weatherApiKeyConfigured.asStateFlow()
 
     fun getSettings() {
         viewModelScope.launch {
             _state.value = repo.getSelectedUnits()
+            _weatherProvider.value = weatherProviderRepo.getProvider()
+            _weatherApiKeyConfigured.value = weatherProviderRepo.hasWeatherApiKey()
+        }
+    }
+
+    fun selectWeatherProvider(value: WeatherProvider) {
+        if (value == WeatherProvider.WeatherApi && !weatherProviderRepo.hasWeatherApiKey()) return
+        weatherProviderRepo.selectProvider(value)
+        _weatherProvider.value = value
+    }
+
+    fun saveWeatherApiKey(value: String) {
+        viewModelScope.launch {
+            weatherProviderRepo.saveWeatherApiKey(value)
+            val configured = weatherProviderRepo.hasWeatherApiKey()
+            _weatherApiKeyConfigured.value = configured
+            if (configured) {
+                weatherProviderRepo.selectProvider(WeatherProvider.WeatherApi)
+                _weatherProvider.value = WeatherProvider.WeatherApi
+            }
+        }
+    }
+
+    fun clearWeatherApiKey() {
+        weatherProviderRepo.clearWeatherApiKey()
+        _weatherApiKeyConfigured.value = false
+        if (_weatherProvider.value == WeatherProvider.WeatherApi) {
+            selectWeatherProvider(WeatherProvider.OpenMeteo)
         }
     }
 
@@ -100,7 +136,7 @@ class SelectedUnitsViewModel(private val repo: SelectedUnitsRepository) : ViewMo
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 val container = (checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]) as App).container
-                return SelectedUnitsViewModel(container.selectedUnitsRepo) as T
+                return SelectedUnitsViewModel(container.selectedUnitsRepo, container.weatherProviderRepo) as T
             }
         }
     }

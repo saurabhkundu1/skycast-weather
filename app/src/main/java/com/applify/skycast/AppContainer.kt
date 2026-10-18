@@ -19,8 +19,10 @@ import com.applify.skycast.common.util.getUserAgent
 import com.applify.skycast.forecast.ForecastRepository
 import com.applify.skycast.forecast.cache.ForecastCacher
 import com.applify.skycast.forecast.download.ForecastDownloader
+import com.applify.skycast.forecast.download.WeatherApiDownloader
 import com.applify.skycast.forecast.download.InternetChecker
 import com.applify.skycast.forecast.units.SelectedUnitsRepository
+import com.applify.skycast.settings.WeatherProviderRepository
 import com.applify.skycast.places.saved.DeletePlace
 import com.applify.skycast.places.saved.GetSavedPlaces
 import com.applify.skycast.places.saved.SavedPlacesRepository
@@ -52,12 +54,15 @@ class AppContainer(private val appContext: Context) {
         ForecastRepository(
             cacher = forecastCacher,
             downloader = ForecastDownloader(userAgent),
-            internetChecker = InternetChecker(appContext)
+            internetChecker = InternetChecker(appContext),
+            weatherProviderRepository = weatherProviderRepo,
+            weatherApiDownloader = WeatherApiDownloader(userAgent)
         )
     }
 
     val selectedPlaceRepo by lazy { SelectedPlaceRepository(prefs, savedPlacesRepo) }
     val selectedUnitsRepo by lazy { SelectedUnitsRepository(prefs) }
+    val weatherProviderRepo by lazy { WeatherProviderRepository(prefs) }
 
     private val savedPlacesRepo by lazy { SavedPlacesRepository(root) }
     val getSavedPlaces get() = GetSavedPlaces(selectedUnitsRepo, selectedPlaceRepo, savedPlacesRepo, forecastRepo)

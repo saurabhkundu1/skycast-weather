@@ -24,41 +24,44 @@ class ForecastCacher(
     private val root: File,
     private val appVersionName: String,
 ) {
-    private val coordsToData = mutableMapOf<Coordinates, Forecast?>()
+    private val coordsToData = mutableMapOf<Pair<Coordinates, String>, Forecast?>()
 
-    suspend fun get(coords: Coordinates): Forecast? {
-        val fromMemory = coordsToData[coords]
+    suspend fun get(coords: Coordinates, source: String = OPEN_METEO_SOURCE): Forecast? {
+        val cacheKey = coords to source
+        val fromMemory = coordsToData[cacheKey]
         if (fromMemory != null) return fromMemory
 
-        val fromFile = findForecastFile(coords)
+        val fromFile = findForecastFile(coords, source)
             ?.let { fileToForecast(it) }
             ?: return null
-        coordsToData[coords] = fromFile
+        coordsToData[cacheKey] = fromFile
 
         return fromFile
     }
 
-    suspend fun save(coords: Coordinates, data: Forecast) {
-        val file = findForecastFile(coords) ?: File(getDir(), coords.id)
+    suspend fun save(coords: Coordinates, data: Forecast, source: String = OPEN_METEO_SOURCE) {
+        val file = findForecastFile(coords, source) ?: File(getDir(), "${coords.id}.$source")
         val jsonString = forecastToJsonString(data)
         withContext(Dispatchers.IO) {
             file.writeText(jsonString)
         }
-        coordsToData[coords] = data
+        coordsToData[coords to source] = data
     }
 
     suspend fun delete(coords: Coordinates) {
-        val file = findForecastFile(coords) ?: return
         withContext(Dispatchers.IO) {
-            file.delete()
+            getDir().listFiles()?.filter { it.name == coords.id || it.name.startsWith("${coords.id}.") }
+                ?.forEach { it.delete() }
         }
-        coordsToData.remove(coords)
+        coordsToData.keys.removeAll { it.first == coords }
     }
 
-    private suspend fun findForecastFile(coords: Coordinates): File? =
+    private suspend fun findForecastFile(coords: Coordinates, source: String): File? =
         withContext(Dispatchers.IO) {
-            getDir().listFiles()
-        }?.firstOrNull { it.name == coords.id }
+            val directory = getDir()
+            File(directory, "${coords.id}.$source").takeIf { it.exists() }
+                ?: if (source == OPEN_METEO_SOURCE) File(directory, coords.id).takeIf { it.exists() } else null
+        }
 
     private suspend fun fileToForecast(file: File): Forecast? {
         val json = JSONObject(
@@ -86,4 +89,8 @@ class ForecastCacher(
                 mkdir()
             }
         }
+
+    companion object {
+        private const val OPEN_METEO_SOURCE = "open-meteo"
+    }
 }

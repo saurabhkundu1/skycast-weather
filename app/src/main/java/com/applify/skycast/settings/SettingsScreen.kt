@@ -20,10 +20,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -36,6 +39,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.foundation.layout.Column
 import com.applify.skycast.R
 import com.applify.skycast.forecast.parameters.precipitation.Precipitation
 import com.applify.skycast.forecast.parameters.pressure.Pressure
@@ -48,11 +53,14 @@ import com.applify.skycast.settings.common.compose.PreferenceButton
 import com.applify.skycast.settings.common.compose.SectionLabel
 import com.applify.skycast.settings.common.compose.SettingsLoadingIndicator
 import com.applify.skycast.theme.Theme
+import com.applify.skycast.forecast.download.WeatherProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     units: Units?,
+    weatherProvider: WeatherProvider,
+    weatherApiKeyConfigured: Boolean,
     theme: Theme,
     onTemperatureUnitClick: (Temperature.Unit) -> Unit,
     onWindUnitClick: (WindSpeed.Unit) -> Unit,
@@ -63,6 +71,9 @@ fun SettingsScreen(
     onPressureUnitClick: (Pressure.Unit) -> Unit,
     onVisibilityUnitClick: (Visibility.Unit) -> Unit,
     onThemeClick: (Theme) -> Unit,
+    onWeatherProviderClick: (WeatherProvider) -> Unit,
+    onWeatherApiKeySave: (String) -> Unit,
+    onWeatherApiKeyRemove: () -> Unit,
     onBackClick: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -100,6 +111,8 @@ fun SettingsScreen(
             if (it != null) {
                 SettingsList(
                     units = it,
+                    weatherProvider = weatherProvider,
+                    weatherApiKeyConfigured = weatherApiKeyConfigured,
                     theme = theme,
                     onTemperatureUnitClick = onTemperatureUnitClick,
                     onWindUnitClick = onWindUnitClick,
@@ -110,6 +123,9 @@ fun SettingsScreen(
                     onPressureUnitClick = onPressureUnitClick,
                     onVisibilityUnitClick = onVisibilityUnitClick,
                     onThemeClick = onThemeClick,
+                    onWeatherProviderClick = onWeatherProviderClick,
+                    onWeatherApiKeySave = onWeatherApiKeySave,
+                    onWeatherApiKeyRemove = onWeatherApiKeyRemove,
                     contentPadding = listContentPadding,
                     modifier = Modifier
                         .fillMaxSize()
@@ -128,6 +144,8 @@ fun SettingsScreen(
 @Composable
 private fun SettingsList(
     units: Units,
+    weatherProvider: WeatherProvider,
+    weatherApiKeyConfigured: Boolean,
     theme: Theme,
     onTemperatureUnitClick: (Temperature.Unit) -> Unit,
     onWindUnitClick: (WindSpeed.Unit) -> Unit,
@@ -138,6 +156,9 @@ private fun SettingsList(
     onPressureUnitClick: (Pressure.Unit) -> Unit,
     onVisibilityUnitClick: (Visibility.Unit) -> Unit,
     onThemeClick: (Theme) -> Unit,
+    onWeatherProviderClick: (WeatherProvider) -> Unit,
+    onWeatherApiKeySave: (String) -> Unit,
+    onWeatherApiKeyRemove: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -150,6 +171,62 @@ private fun SettingsList(
     var showPressureDialog by remember { mutableStateOf(false) }
     var showVisDialog by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showWeatherProviderDialog by remember { mutableStateOf(false) }
+    var showWeatherApiKeyDialog by remember { mutableStateOf(false) }
+    var apiKeyDraft by remember { mutableStateOf("") }
+
+    if (showWeatherProviderDialog) {
+        MultipleChoiceDialog(
+            title = stringResource(R.string.settings_weather_provider),
+            choices = listOf("Open-Meteo", "WeatherAPI.com"),
+            selectedIdx = if (weatherProvider == WeatherProvider.OpenMeteo) 0 else 1,
+            onSelect = { index ->
+                val selected = if (index == 0) WeatherProvider.OpenMeteo else WeatherProvider.WeatherApi
+                if (selected == WeatherProvider.WeatherApi && !weatherApiKeyConfigured) {
+                    apiKeyDraft = ""
+                    showWeatherApiKeyDialog = true
+                } else {
+                    onWeatherProviderClick(selected)
+                }
+                showWeatherProviderDialog = false
+            },
+            onDismissRequest = { showWeatherProviderDialog = false }
+        )
+    }
+
+    if (showWeatherApiKeyDialog) {
+        AlertDialog(
+            onDismissRequest = { showWeatherApiKeyDialog = false },
+            title = { Text(stringResource(R.string.settings_weather_api_key)) },
+            text = {
+                Column {
+                    Text(stringResource(R.string.settings_weather_api_key_help))
+                    TextField(
+                        value = apiKeyDraft,
+                        onValueChange = { apiKeyDraft = it },
+                        singleLine = true,
+                        visualTransformation = PasswordVisualTransformation(),
+                        label = { Text(stringResource(R.string.settings_weather_api_key)) }
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    enabled = apiKeyDraft.isNotBlank(),
+                    onClick = {
+                        onWeatherApiKeySave(apiKeyDraft)
+                        apiKeyDraft = ""
+                        showWeatherApiKeyDialog = false
+                    }
+                ) { Text(stringResource(R.string.save)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showWeatherApiKeyDialog = false }) {
+                    Text(stringResource(R.string.cancel))
+                }
+            }
+        )
+    }
 
     if (showTempDialog) {
         MultipleChoiceDialog(
@@ -358,6 +435,34 @@ private fun SettingsList(
                 value = theme.label(),
                 onClick = { showThemeDialog = true }
             )
+        }
+        item {
+            SectionLabel(label = stringResource(R.string.settings_weather_section))
+        }
+        item {
+            PreferenceButton(
+                title = stringResource(R.string.settings_weather_provider),
+                value = if (weatherProvider == WeatherProvider.OpenMeteo) "Open-Meteo" else "WeatherAPI.com",
+                onClick = { showWeatherProviderDialog = true }
+            )
+        }
+        if (weatherProvider == WeatherProvider.WeatherApi || weatherApiKeyConfigured) {
+            item {
+                PreferenceButton(
+                    title = stringResource(R.string.settings_weather_api_key),
+                    value = if (weatherApiKeyConfigured) stringResource(R.string.settings_weather_api_key_saved) else stringResource(R.string.settings_weather_api_key_missing),
+                    onClick = { apiKeyDraft = ""; showWeatherApiKeyDialog = true }
+                )
+            }
+        }
+        if (weatherApiKeyConfigured) {
+            item {
+                PreferenceButton(
+                    title = stringResource(R.string.settings_weather_api_key_remove),
+                    value = stringResource(R.string.settings_weather_api_key_remove_value),
+                    onClick = onWeatherApiKeyRemove
+                )
+            }
         }
     }
 }

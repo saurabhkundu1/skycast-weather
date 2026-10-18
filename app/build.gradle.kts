@@ -22,8 +22,8 @@ android {
     defaultConfig {
         applicationId = "com.applify.skycast"
         minSdk = 28
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // This is deprecated, but the alternative (androidResources.localeFilters) is incubating

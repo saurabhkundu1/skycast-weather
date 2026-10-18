@@ -20,7 +20,18 @@
     <string name="general_btn_dialog_confirm">OK</string>
     <string name="general_btn_dialog_cancel">Cancel</string>
 
-    <string name="credit_weather">Weather data by Open-Meteo.com</string>
+    <string name="credit_weather">Weather data by Open-Meteo.com or WeatherAPI.com, as selected</string>
+    <string name="weather_data_disclaimer">Forecasts are for general information only and may not be accurate for your location or time. Do not rely on this data for personal safety, aviation, marine navigation, emergency planning, or other safety-critical decisions. Consult official meteorological services and relevant authorities.</string>
+    <string name="settings_weather_section">Weather data</string>
+    <string name="settings_weather_provider">Weather service</string>
+    <string name="settings_weather_api_key">WeatherAPI.com key</string>
+    <string name="settings_weather_api_key_saved">Saved securely on this device</string>
+    <string name="settings_weather_api_key_missing">Not set</string>
+    <string name="settings_weather_api_key_remove">Remove saved key</string>
+    <string name="settings_weather_api_key_remove_value">Return to Open-Meteo</string>
+    <string name="settings_weather_api_key_help">Get a personal API key at weatherapi.com. The key is encrypted on this device and sent only to WeatherAPI.com. WeatherAPI.com data is credited in the forecast.</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
     <string name="credit_geocoding">Geocoding data by Open-Meteo.com</string>
 
     <string name="place_picker_hint_search">Search places…</string>

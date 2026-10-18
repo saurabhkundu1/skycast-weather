@@ -24,6 +24,8 @@ fun SettingsDestination(theme: Theme, onThemeClick: (Theme) -> Unit, onBackClick
     LaunchedEffect(Unit) { unitsVM.getSettings() }
     SettingsScreen(
         units = unitsVM.state.collectAsState().value,
+        weatherProvider = unitsVM.weatherProvider.collectAsState().value,
+        weatherApiKeyConfigured = unitsVM.weatherApiKeyConfigured.collectAsState().value,
         theme = theme,
         onTemperatureUnitClick = unitsVM::selectTemperatureUnit,
         onWindUnitClick = unitsVM::selectWindUnit,
@@ -34,6 +36,9 @@ fun SettingsDestination(theme: Theme, onThemeClick: (Theme) -> Unit, onBackClick
         onPressureUnitClick = unitsVM::selectPressureUnit,
         onVisibilityUnitClick = unitsVM::selectVisibilityUnit,
         onThemeClick = onThemeClick,
+        onWeatherProviderClick = unitsVM::selectWeatherProvider,
+        onWeatherApiKeySave = unitsVM::saveWeatherApiKey,
+        onWeatherApiKeyRemove = unitsVM::clearWeatherApiKey,
         onBackClick = onBackClick
     )
 }

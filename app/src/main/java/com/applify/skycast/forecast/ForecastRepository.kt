@@ -15,6 +15,8 @@ package com.applify.skycast.forecast
 import com.applify.skycast.forecast.cache.ForecastCacher
 import com.applify.skycast.forecast.download.ForecastDownloader
 import com.applify.skycast.forecast.download.InternetChecker
+import com.applify.skycast.forecast.download.WeatherApiDownloader
+import com.applify.skycast.forecast.download.WeatherProvider
 import com.applify.skycast.places.Coordinates
 import com.applify.skycast.forecast.units.Units
 import com.applify.skycast.places.Location
@@ -22,11 +24,15 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.time.Duration
 import java.time.Instant
+import java.security.MessageDigest
+import com.applify.skycast.settings.WeatherProviderRepository
 
 class ForecastRepository(
     private val cacher: ForecastCacher,
     private val downloader: ForecastDownloader,
-    private val internetChecker: InternetChecker
+    private val internetChecker: InternetChecker,
+    private val weatherProviderRepository: WeatherProviderRepository,
+    private val weatherApiDownloader: WeatherApiDownloader
 ) {
     private val coordsToMutex = mutableMapOf<Coordinates, Mutex>()
 
@@ -36,11 +42,20 @@ class ForecastRepository(
         updateFrequency: UpdateFrequency = UpdateFrequency.App
     ): Forecast? =
         coordsToMutex.getOrPut(location.coordinates, defaultValue = { Mutex() }).withLock {
-            val cached = cacher.get(location.coordinates)
+            val provider = weatherProviderRepository.getProvider()
+            val apiKey = if (provider == WeatherProvider.WeatherApi) weatherProviderRepository.getWeatherApiKey() else null
+            val source = when (provider) {
+                WeatherProvider.OpenMeteo -> "open-meteo"
+                WeatherProvider.WeatherApi -> "weatherapi-${apiKey.orEmpty().sha256()}"
+            }
+            val cached = cacher.get(location.coordinates, source)
             if (shouldUpdate(cached, updateFrequency)) {
-                val downloaded = downloader.get(location)
+                val downloaded = when (provider) {
+                    WeatherProvider.OpenMeteo -> downloader.get(location)
+                    WeatherProvider.WeatherApi -> apiKey?.let { weatherApiDownloader.get(location, it) }
+                }
                 if (downloaded != null) {
-                    cacher.save(location.coordinates, downloaded)
+                    cacher.save(location.coordinates, downloaded, source)
                     downloaded
                 } else {
                     cached
@@ -60,6 +75,11 @@ class ForecastRepository(
         return shouldUpdate && internetChecker.hasInternet()
     }
 }
+
+private fun String.sha256(): String = MessageDigest.getInstance("SHA-256")
+    .digest(toByteArray(Charsets.UTF_8))
+    .take(8)
+    .joinToString("") { "%02x".format(it) }
 
 enum class UpdateFrequency(val expiresAfter: Duration?) {
     App(expiresAfter = Duration.ofHours(1)),
