@@ -36,7 +36,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_ALIAS: skycast-recovery
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN || secrets.GH_PAT }}
         run: |
           set -euo pipefail
           : "${KEYSTORE_BASE64:?KEYSTORE_BASE64 secret is required}"
@@ -118,7 +118,7 @@ jobs:
 
       - name: Notify Applify F-Droid repository
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN || secrets.GH_PAT }}
           TAG_NAME: ${{ steps.release.outputs.tag }}
           VERSION_NAME: ${{ steps.release.outputs.version_name }}
           VERSION_CODE: ${{ steps.release.outputs.version_code }}
