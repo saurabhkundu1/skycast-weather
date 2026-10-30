@@ -17,7 +17,7 @@ jobs:
       contents: write
     env:
       PACKAGE_NAME: com.applify.skycast
-      EXPECTED_SIGNER_SHA256: ${{ vars.EXPECTED_SKYCAST_SIGNER_SHA256 }}
+      EXPECTED_SIGNER_SHA256: 8873C9944377ED68DCDB98C5F1FDCCE10B4BD8359DA0271CC33931DF58EE97E7
 
     steps:
       - name: Check out source
