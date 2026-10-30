@@ -162,13 +162,9 @@
 
     <string name="vis">Visibilidad</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s&nbsp;m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s&nbsp;ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s&nbsp;km</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s&nbsp;mi</string>
     <string name="vis_description_excellent">Vista perfectamente clara.</string>
     <string name="vis_description_good">Vista clara.</string>
     <string name="vis_description_moderate">Vista bastante clara.</string>
@@ -227,4 +223,17 @@
     <string name="wmo_95">Tormenta</string>
     <string name="wmo_96">Tormenta con granizo</string>
     <string name="wmo_99">Tormenta fuerte con granizo</string>
+    <string name="unexpected_error_screen_title">Error inesperado</string>
+    <string name="unexpected_error_screen_description">Se ha producido un error inesperado. Para continuar, vuelve a la pantalla de inicio e inténtalo de nuevo. Si quieres ayudar, crea una incidencia en GitHub y pega el siguiente informe de error.</string>
+    <string name="unexpected_error_screen_label_clip_entry">Informe de error</string>
+    <string name="unexpected_error_screen_btn_copy_logs">Copiar todo</string>
+    <string name="unexpected_error_screen_btn_go_home">Pantalla de inicio</string>
+    <string name="precip_label_light">Ligera</string>
+    <string name="precip_label_moderate">Moderada</string>
+    <string name="precip_label_heavy">Intensa</string>
+    <string name="vis_description_very_good">Visibilidad muy buena.</string>
+    <string name="searched_place_edit_tz_title">Establecer zona horaria</string>
+    <string name="searched_place_edit_tz_description_value">La zona horaria de %1$s es «%2$s», pero el dispositivo no la reconoce. Para usar esta ubicación, establece la zona horaria manualmente.</string>
+    <string name="searched_place_edit_tz_hint">Buscar zonas horarias…</string>
+    <string name="searched_place_edit_tz_no_search_results_value">No hay zonas horarias que coincidan con «%1$s»</string>
 </resources>

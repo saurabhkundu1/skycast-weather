@@ -23,7 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,7 +50,7 @@ fun GraphsPagerIndicator(
     modifier: Modifier = Modifier
 ) {
     val formatter = rememberDateTimeFormatter(ofPattern = R.string.date_time_pattern_dow)
-    ScrollableTabRow(selectedTabIndex = selected, modifier = modifier) {
+    PrimaryScrollableTabRow(selectedTabIndex = selected, modifier = modifier) {
         state.forEachIndexed { idx, date ->
             Tab(
                 selected = idx == selected,

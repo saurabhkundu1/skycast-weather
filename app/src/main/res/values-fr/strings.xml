@@ -158,13 +158,9 @@
 
     <string name="vis">Visibilité</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s km</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s mi</string>
     <string name="vis_description_excellent">Vue complètement dégagée.</string>
     <string name="vis_description_good">Vue dégagée.</string>
     <string name="vis_description_moderate">Vue plutôt dégagée.</string>
@@ -223,4 +219,17 @@
     <string name="wmo_95">Orage</string>
     <string name="wmo_96">Orage avec légère grêle</string>
     <string name="wmo_99">Orage avec forte grêle</string>
+    <string name="unexpected_error_screen_title">Erreur inattendue</string>
+    <string name="unexpected_error_screen_description">Une erreur inattendue s’est produite. Pour continuer, revenez à l’écran d’accueil et réessayez. Pour nous aider, créez un ticket sur GitHub et collez le rapport d’erreur ci-dessous.</string>
+    <string name="unexpected_error_screen_label_clip_entry">Rapport d’erreur</string>
+    <string name="unexpected_error_screen_btn_copy_logs">Tout copier</string>
+    <string name="unexpected_error_screen_btn_go_home">Écran d’accueil</string>
+    <string name="precip_label_light">Faible</string>
+    <string name="precip_label_moderate">Modérée</string>
+    <string name="precip_label_heavy">Forte</string>
+    <string name="vis_description_very_good">Très bonne visibilité.</string>
+    <string name="searched_place_edit_tz_title">Définir le fuseau horaire</string>
+    <string name="searched_place_edit_tz_description_value">Le fuseau horaire de %1$s est « %2$s », mais votre appareil ne le reconnaît pas. Pour utiliser cet emplacement, définissez le fuseau horaire manuellement.</string>
+    <string name="searched_place_edit_tz_hint">Rechercher des fuseaux horaires…</string>
+    <string name="searched_place_edit_tz_no_search_results_value">Aucun fuseau horaire correspondant à « %1$s »</string>
 </resources>

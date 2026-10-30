@@ -4,170 +4,139 @@ on:
   push:
     tags:
       - 'Skycast-*'
-      - '*'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
     name: Build, sign and upload to GitHub Releases
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      PACKAGE_NAME: com.applify.skycast
+      EXPECTED_SIGNER_SHA256: ${{ vars.EXPECTED_SKYCAST_SIGNER_SHA256 }}
 
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4
-
-      - name: Save version name
-        shell: bash
-        run: |
-          echo 'VERSION_NAME<<EOF' >> "$GITHUB_ENV"
-          grep versionName app/build.gradle.kts | cut -d '"' -f2 | head -n 1 >> "$GITHUB_ENV"
-          echo 'EOF' >> "$GITHUB_ENV"
-
-      - name: Save version code
-        shell: bash
-        run: |
-          echo 'VERSION_CODE<<EOF' >> "$GITHUB_ENV"
-          grep versionCode app/build.gradle.kts | grep -Eo '[0-9]+' | tail -n 1 >> "$GITHUB_ENV"
-          echo 'EOF' >> "$GITHUB_ENV"
-
-      - name: Save changelog
-        shell: bash
-        run: |
-          CHANGELOG_CONTENT=""
-          if [ -f "fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt" ]; then
-            CHANGELOG_CONTENT=$(cat "fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt")
-          else
-            CHANGELOG_CONTENT="Release Skycast-${VERSION_NAME}"
-          fi
-          
-          {
-            echo 'CHANGELOG<<EOF'
-            echo "$CHANGELOG_CONTENT"
-            echo ""
-            echo "---"
-            echo "🌐 **GitHub Page**: https://saurabhkundu1.github.io/Applify/"
-            echo "📱 **F-Droid Repo**: https://saurabhkundu1.github.io/Applify/repo"
-            echo EOF
-          } >> "$GITHUB_ENV"
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Set up Java
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: temurin
           java-version: '21'
           cache: gradle
 
-      - name: Decode Signing Keystore
-        shell: bash
+      - name: Validate replacement signing configuration
         env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 || secrets.SIGNING_KEY_BASE64 || secrets.ENCODED_KEYSTORE }}
-        run: |
-          if [ -n "$KEYSTORE_BASE64" ]; then
-            echo "$KEYSTORE_BASE64" | tr -d '\r\n ' | base64 --decode > app/release.keystore
-            if [ -s app/release.keystore ]; then
-              echo "Keystore successfully decoded to app/release.keystore."
-            else
-              echo "::warning::KEYSTORE_BASE64 secret was provided but decoded to an empty file."
-            fi
-          else
-            echo "::warning::KEYSTORE_BASE64 secret not found in GitHub Repository Secrets. Building unsigned release APK."
-          fi
-
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-
-      - name: Assemble Release APK
-        env:
-          KEYSTORE_FILE_PATH: release.keystore
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD || secrets.KEY_STORE_PASSWORD || secrets.STORE_PASSWORD }}
-          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS || secrets.KEY_ALIAS || secrets.ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD || secrets.KEYSTORE_KEY_PASSWORD || secrets.KEYSTORE_PASSWORD }}
-        run: ./gradlew assembleRelease
-
-      - name: Locate Output APK
-        shell: bash
-        run: |
-          APK_PATH=$(find app/build/outputs/apk/release -name "*.apk" | head -n 1)
-          if [ -z "$APK_PATH" ]; then
-            echo "::error::No release APK found in app/build/outputs/apk/release!"
-            exit 1
-          fi
-          echo "APK_PATH=$APK_PATH" >> "$GITHUB_ENV"
-          echo "Found release APK at: $APK_PATH"
-
-      - name: Determine Release Tag
-        shell: bash
-        run: |
-          if [ "${{ github.ref_type }}" = "tag" ]; then
-            RELEASE_TAG="${{ github.ref_name }}"
-          else
-            RELEASE_TAG="Skycast-${VERSION_NAME}"
-          fi
-          echo "RELEASE_TAG=$RELEASE_TAG" >> "$GITHUB_ENV"
-
-      - name: Upload APK to GitHub release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ env.APK_PATH }}
-          body: ${{ env.CHANGELOG }}
-          tag: ${{ env.RELEASE_TAG }}
-          release_name: Skycast-${{ env.VERSION_NAME }}
-          asset_name: skycast-${{ env.VERSION_NAME }}.apk
-
-      - name: Notify Applify F-Droid Repo
-        shell: bash
-        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS: skycast-recovery
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN }}
         run: |
-          DISPATCH_URL="https://api.github.com/repos/saurabhkundu1/Applify/dispatches"
-          DOWNLOAD_URL="https://github.com/saurabhkundu1/skycast-weather/releases/download/${RELEASE_TAG}/skycast-${VERSION_NAME}.apk"
+          set -euo pipefail
+          : "${KEYSTORE_BASE64:?KEYSTORE_BASE64 secret is required}"
+          : "${KEYSTORE_PASSWORD:?KEYSTORE_PASSWORD secret is required}"
+          : "${KEYSTORE_ALIAS:?KEYSTORE_ALIAS secret is required}"
+          : "${KEY_PASSWORD:?KEY_PASSWORD secret is required}"
+          : "${PAT_TOKEN:?A repository dispatch token is required}"
+          [[ "$EXPECTED_SIGNER_SHA256" =~ ^[A-Fa-f0-9]{64}$ ]]
+          [[ "${EXPECTED_SIGNER_SHA256^^}" != "DE62E0D386DB9B6FC616ADF6573F458AAC8D04F873007C73B8585FBEEF0960255" ]]
 
-          PAYLOAD=$(cat <<EOF
-          {
-            "event_type": "new_release",
-            "client_payload": {
-              "source_repo": "saurabhkundu1/skycast-weather",
-              "package_name": "com.applify.skycast",
-              "version": "${VERSION_NAME}",
-              "version_code": "${VERSION_CODE}",
-              "tag": "${RELEASE_TAG}",
-              "asset_name": "skycast-${VERSION_NAME}.apk",
-              "app": "com.applify.skycast",
-              "version_name": "${VERSION_NAME}",
-              "tag_name": "${RELEASE_TAG}",
-              "apk_name": "skycast-${VERSION_NAME}.apk",
-              "download_url": "${DOWNLOAD_URL}"
-            }
-          }
-          EOF
-          )
+      - name: Decode replacement keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          umask 077
+          printf '%s' "$KEYSTORE_BASE64" | tr -d '\r\n ' | base64 --decode > app/release.keystore
+          test -s app/release.keystore
 
-          TOKEN="${PAT_TOKEN}"
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
 
-          if [ -z "$TOKEN" ]; then
-            echo "::warning::PAT_TOKEN or REPOSITORY_DISPATCH_TOKEN is not configured in repository secrets."
-            echo "::warning::To enable automatic F-Droid repository updates, create a GitHub Personal Access Token with repo scope and save it as PAT_TOKEN secret."
-            exit 0
-          fi
+      - name: Assemble signed APK
+        env:
+          KEYSTORE_FILE_PATH: release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS: skycast-recovery
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew --no-daemon assembleRelease
 
-          echo "Sending repository_dispatch event to Applify ($DISPATCH_URL)..."
-          HTTP_STATUS=$(curl -s -o response_body.txt -w "%{http_code}" \
-            -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer $TOKEN" \
-            "$DISPATCH_URL" \
-            -d "$PAYLOAD")
+      - name: Verify release identity and signer
+        run: |
+          set -euo pipefail
+          APK_PATH="$(find app/build/outputs/apk/release -type f -name '*.apk' -print -quit)"
+          test -n "$APK_PATH"
+          BUILD_TOOLS_DIR="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -n 1)"
+          test -n "$BUILD_TOOLS_DIR"
+          "$BUILD_TOOLS_DIR/aapt" dump badging "$APK_PATH" | grep -F "package: name='$PACKAGE_NAME'"
+          "$BUILD_TOOLS_DIR/apksigner" verify --verbose --print-certs "$APK_PATH" > "$RUNNER_TEMP/apksigner.txt"
+          test "$(grep -Ec '^Signer #[0-9]+ certificate SHA-256 digest:' "$RUNNER_TEMP/apksigner.txt")" = 1
+          actual="$(sed -n 's/^Signer #1 certificate SHA-256 digest: //p' "$RUNNER_TEMP/apksigner.txt" | tr -d ':' | tr '[:lower:]' '[:upper:]')"
+          expected="$(printf '%s' "$EXPECTED_SIGNER_SHA256" | tr -d ':' | tr '[:lower:]' '[:upper:]')"
+          test "$actual" = "$expected"
+          test "$actual" != "DE62E0D386DB9B6FC616ADF6573F458AAC8D04F873007C73B8585FBEEF0960255"
+          version_name="$(sed -n 's/^[[:space:]]*versionName = "\([^"]*\)"/\1/p' app/build.gradle.kts | head -n 1)"
+          test -n "$version_name"
+          cp "$APK_PATH" "skycast-${version_name}.apk"
+          sha256sum "skycast-${version_name}.apk" > SHA256SUMS.txt
+          rm -f app/release.keystore
 
-          echo "Dispatch response HTTP code: $HTTP_STATUS"
-          cat response_body.txt
-
-          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
-            echo "Successfully dispatched new_release event to Applify repository."
+      - name: Resolve release metadata
+        id: release
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version_name="$(sed -n 's/^[[:space:]]*versionName = "\([^"]*\)"/\1/p' app/build.gradle.kts | head -n 1)"
+          version_code="$(sed -n 's/^[[:space:]]*versionCode = \([0-9][0-9]*\)/\1/p' app/build.gradle.kts | head -n 1)"
+          test -n "$version_name" && test -n "$version_code"
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+            tag="Skycast-${version_name}"
           else
-            echo "::error::Failed to send repository_dispatch event to Applify (HTTP $HTTP_STATUS)."
-            exit 1
+            tag="$TAG_NAME"
           fi
+          [[ "$tag" =~ ^Skycast-[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$ ]]
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version_name=$version_name" >> "$GITHUB_OUTPUT"
+          echo "version_code=$version_code" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ steps.release.outputs.tag }}
+          VERSION_NAME: ${{ steps.release.outputs.version_name }}
+        run: |
+          gh release create "$TAG_NAME" "skycast-${VERSION_NAME}.apk" SHA256SUMS.txt \
+            --title "Skycast ${VERSION_NAME}" \
+            --notes "Skycast keeps package ID com.applify.skycast and now uses its replacement signing key. Uninstall the previous copy before installing this release; saved places and preferences may need to be set up again."
+
+      - name: Notify Applify F-Droid repository
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN }}
+          TAG_NAME: ${{ steps.release.outputs.tag }}
+          VERSION_NAME: ${{ steps.release.outputs.version_name }}
+          VERSION_CODE: ${{ steps.release.outputs.version_code }}
+        run: |
+          set -euo pipefail
+          asset_name="skycast-${VERSION_NAME}.apk"
+          payload="$(jq -n \
+            --arg tag "$TAG_NAME" \
+            --arg version "$VERSION_NAME" \
+            --arg code "$VERSION_CODE" \
+            --arg asset "$asset_name" \
+            --arg package "$PACKAGE_NAME" \
+            '{event_type:"new_release",client_payload:{source_repo:"saurabhkundu1/skycast-weather",package_name:$package,version:$version,version_code:$code,tag:$tag,asset_name:$asset}}')"
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $PAT_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -H "Content-Type: application/json" \
+            --data "$payload" \
+            https://api.github.com/repos/saurabhkundu1/Applify/dispatches

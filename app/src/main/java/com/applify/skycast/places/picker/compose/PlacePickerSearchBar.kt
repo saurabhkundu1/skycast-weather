@@ -21,6 +21,8 @@ import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +31,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.SearchBarValue
+import androidx.compose.material3.ExpandedFullScreenSearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.minimumInteractiveComponentSize
@@ -36,9 +41,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +50,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.compose.material3.rememberSearchBarState
+import kotlinx.coroutines.flow.distinctUntilChanged
 import com.applify.skycast.R
 import com.applify.skycast.places.Place
 import com.applify.skycast.places.picker.PlacePickerLocationError
@@ -104,16 +110,32 @@ fun PlacePickerSearchBar(
     onUseCurrentLocation: () -> Unit,
     onLocationPermissionDenied: () -> Unit,
 ) {
-    val focusRequester = remember { FocusRequester() }
     val context = LocalContext.current
+    val searchBarState = rememberSearchBarState()
+    val textFieldState = rememberTextFieldState(initialText = query)
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { granted ->
         if (granted) onUseCurrentLocation() else onLocationPermissionDenied()
     }
     LaunchedEffect(active) {
-        if (active) focusRequester.requestFocus()
-        else focusRequester.freeFocus()
+        if (active) searchBarState.animateToExpanded()
+        else searchBarState.animateToCollapsed()
+    }
+    LaunchedEffect(searchBarState) {
+        snapshotFlow { searchBarState.currentValue }
+            .distinctUntilChanged()
+            .collect { onActiveChange(it == SearchBarValue.Expanded) }
+    }
+    LaunchedEffect(query) {
+        if (textFieldState.text.toString() != query) {
+            textFieldState.setTextAndPlaceCursorAtEnd(query)
+        }
+    }
+    LaunchedEffect(textFieldState) {
+        snapshotFlow { textFieldState.text.toString() }
+            .distinctUntilChanged()
+            .collect(onQueryChange)
     }
     val horizontalPadding by animateDpAsState(
         targetValue = if (active) 0.dp else 24.dp,
@@ -121,36 +143,44 @@ fun PlacePickerSearchBar(
         label = "Search bar horizontal padding"
     )
 
+    val inputField: @Composable () -> Unit = {
+        SearchBarDefaults.InputField(
+            textFieldState = textFieldState,
+            searchBarState = searchBarState,
+            onSearch = onSearchClick,
+            leadingIcon = {
+                PinOrBackButton(
+                    active = active,
+                    onBackClick = { onActiveChange(false) }
+                )
+            },
+            trailingIcon = {
+                SettingsOrClearButton(
+                    active = active,
+                    onSettingsClick = onSettingsClick,
+                    onClearClick = onQueryClearClick
+                )
+            },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.place_picker_hint_search),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+            },
+        )
+    }
+
     SearchBar(
-        query = query,
-        onQueryChange = onQueryChange,
-        onSearch = onSearchClick,
-        active = active,
-        onActiveChange = onActiveChange,
-        leadingIcon = {
-            PinOrBackButton(
-                active = active,
-                onBackClick = { onActiveChange(false) }
-            )
-        },
-        trailingIcon = {
-            SettingsOrClearButton(
-                active = active,
-                onSettingsClick = onSettingsClick,
-                onClearClick = onQueryClearClick
-            )
-        },
-        placeholder = {
-            Text(
-                text = stringResource(id = R.string.place_picker_hint_search),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
-            )
-        },
+        state = searchBarState,
+        inputField = inputField,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = horizontalPadding)
-            .focusRequester(focusRequester)
+            .padding(horizontal = horizontalPadding),
+    )
+    ExpandedFullScreenSearchBar(
+        state = searchBarState,
+        inputField = inputField,
     ) {
         Column {
             TextButton(

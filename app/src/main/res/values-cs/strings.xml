@@ -165,13 +165,9 @@
 
     <string name="vis">Viditelnost</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s km</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s mi</string>
     <string name="vis_description_excellent">Dokonalý výhled.</string>
     <string name="vis_description_good">Jasný výhled.</string>
     <string name="vis_description_moderate">Poměrně dobrý výhled.</string>
@@ -230,4 +226,17 @@
     <string name="wmo_95">Bouřka</string>
     <string name="wmo_96">Bouřka se slabým krupobitím</string>
     <string name="wmo_99">Bouřka se silným krupobitím</string>
+    <string name="unexpected_error_screen_title">Neočekávaná chyba</string>
+    <string name="unexpected_error_screen_description">Došlo k neočekávané chybě. Pokračujte návratem na domovskou obrazovku a zkuste to znovu. Pokud chcete pomoci, vytvořte problém na GitHubu a vložte následující hlášení o chybě.</string>
+    <string name="unexpected_error_screen_label_clip_entry">Hlášení o chybě</string>
+    <string name="unexpected_error_screen_btn_copy_logs">Kopírovat vše</string>
+    <string name="unexpected_error_screen_btn_go_home">Domovská obrazovka</string>
+    <string name="precip_label_light">Slabé</string>
+    <string name="precip_label_moderate">Mírné</string>
+    <string name="precip_label_heavy">Silné</string>
+    <string name="vis_description_very_good">Velmi dobrá viditelnost.</string>
+    <string name="searched_place_edit_tz_title">Nastavit časové pásmo</string>
+    <string name="searched_place_edit_tz_description_value">Časové pásmo místa %1$s je „%2$s“, ale zařízení ho nerozpoznává. Chcete-li toto místo použít, nastavte časové pásmo ručně.</string>
+    <string name="searched_place_edit_tz_hint">Hledat časová pásma…</string>
+    <string name="searched_place_edit_tz_no_search_results_value">Časová pásma odpovídající „%1$s“ nebyla nalezena</string>
 </resources>

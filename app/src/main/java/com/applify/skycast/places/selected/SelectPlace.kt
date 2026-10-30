@@ -17,10 +17,12 @@ import com.applify.skycast.places.saved.SavedPlacesRepository
 
 class SelectPlace(
     private val selectedPlaceRepository: SelectedPlaceRepository,
-    private val savedPlacesRepository: SavedPlacesRepository
+    private val savedPlacesRepository: SavedPlacesRepository,
+    private val onSelected: () -> Unit = {}
 ) {
     suspend operator fun invoke(place: Place) {
         selectedPlaceRepository.selectPlace(place)
         savedPlacesRepository.savePlace(place)
+        onSelected()
     }
 }

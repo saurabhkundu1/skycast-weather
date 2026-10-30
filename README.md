@@ -3,9 +3,6 @@
 Modern weather app with graphs and thoughtful data visualization for Android. Spiritual successor to [Prognoza](https://github.com/davidtakac/prognoza).
 
 <div align="center">
-    <a href="https://fdroid.link/#https://saurabhkundu1.github.io/Applify/repo?fingerprint=DE62E0D386DB9B6FC616ADF6573F458AAC8D04F873007C73B8585FBEF0960255">
-        <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" height="70" alt="Get it on F-Droid"/>
-    </a>
     <a href="https://saurabhkundu1.github.io/Applify/">
         <img src="assets/badge_izzyondroid.png" height="70" alt="IzzyOnDroid"/>
     </a>
@@ -40,6 +37,8 @@ Modern weather app with graphs and thoughtful data visualization for Android. Sp
 
 Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lightweight weather experience without tracking, ads, or requiring unnecessary device permissions.
 
+> **Signing-key migration:** The previous app-signing key was exposed in public Git history and must not sign new releases. The replacement keeps the package ID `com.applify.skycast` and uses a new signer. Remove the old Skycast install before installing the replacement from Applify; saved places and preferences may need to be configured again.
+
 ---
 
 ## 📱 Screenshots
@@ -60,7 +59,7 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
 
 ## ✨ Features
 
-- 🔒 **Privacy-First Design**: Does not access your device location (searches locations via Open-Meteo geocoding API).
+- 🔒 **Privacy-First Design**: Location search works through Open-Meteo geocoding. Optional coarse device location can select your current place; its coordinates are sent to Open-Meteo for weather and time-zone data.
 - 🔑 **No API Key Required**: Ready to use right out of the box with zero setup.
 - 📴 **Offline Support**: Caches weather data locally for offline viewing and instant startup.
 - 📡 **Data Efficient**: Minimal network usage, optimized data fetching and bandwidth saving.
@@ -114,7 +113,7 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
    - [ ] Home screen tiles
    - [ ] Air quality graphs
 3. **Weather Alerts**
-4. **Home Screen Widgets**
+4. **Home Screen Widgets** [x]
 5. **Notification Widgets**
 6. **Customizable Open-Meteo Data Sources**
 

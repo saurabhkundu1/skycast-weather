@@ -158,13 +158,9 @@
 
     <string name="vis">Tầm nhìn xa</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%skm</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s mi</string>
     <string name="vis_description_excellent">Tầm nhìn hoàn toàn rõ ràng.</string>
     <string name="vis_description_good">Tầm nhìn rõ ràng.</string>
     <string name="vis_description_moderate">Tầm nhìn khá rõ ràng.</string>
@@ -223,4 +219,17 @@
     <string name="wmo_95">Sấm sét</string>
     <string name="wmo_96">Dông kèm mưa đá nhẹ</string>
     <string name="wmo_99">Dông kèm mưa đá lớn</string>
+    <string name="unexpected_error_screen_title">Lỗi không mong muốn</string>
+    <string name="unexpected_error_screen_description">Đã xảy ra lỗi không mong muốn. Để tiếp tục, hãy quay về màn hình chính và thử lại. Nếu muốn giúp đỡ, hãy tạo issue trên GitHub và dán báo cáo lỗi sau đây.</string>
+    <string name="unexpected_error_screen_label_clip_entry">Báo cáo lỗi</string>
+    <string name="unexpected_error_screen_btn_copy_logs">Sao chép tất cả</string>
+    <string name="unexpected_error_screen_btn_go_home">Màn hình chính</string>
+    <string name="precip_label_light">Nhẹ</string>
+    <string name="precip_label_moderate">Vừa</string>
+    <string name="precip_label_heavy">Nặng</string>
+    <string name="vis_description_very_good">Tầm nhìn rất tốt.</string>
+    <string name="searched_place_edit_tz_title">Đặt múi giờ</string>
+    <string name="searched_place_edit_tz_description_value">Múi giờ của %1$s là “%2$s”, nhưng thiết bị không nhận dạng được. Để sử dụng địa điểm này, hãy đặt múi giờ thủ công.</string>
+    <string name="searched_place_edit_tz_hint">Tìm múi giờ…</string>
+    <string name="searched_place_edit_tz_no_search_results_value">Không có múi giờ phù hợp với “%1$s”</string>
 </resources>

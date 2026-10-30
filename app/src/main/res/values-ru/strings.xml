@@ -23,7 +23,7 @@
     <string name="credit_weather">Данные предоставлены Open-Meteo.com</string>
     <string name="credit_geocoding">Данные о геокодировании предоставлены Open-Meteo.com</string>
 
-    <string name="place_picker_hint_search">Поиск мест...</string>
+    <string name="place_picker_hint_search">Поиск мест…</string>
     <string name="place_picker_title_saved_places">Сохраненные места</string>
     <string name="place_picker_title_search_results">Результат поиска</string>
     <string name="place_picker_error_no_internet">Похоже, вы не подключены к сети. Подключитесь к сети.</string>
@@ -158,13 +158,9 @@
 
     <string name="vis">Видимость</string>
     <string name="vis_unit_m">м</string>
-    <string name="vis_value_m">%s м</string>
     <string name="vis_unit_ft">фт</string>
-    <string name="vis_value_ft">%s фт</string>
     <string name="vis_unit_km">км</string>
-    <string name="vis_value_km">%s км</string>
     <string name="vis_unit_mi">мили</string>
-    <string name="vis_value_mi">%s мили</string>
     <string name="vis_description_excellent">Отлично видно.</string>
     <string name="vis_description_good">Хорошо видно.</string>
     <string name="vis_description_moderate">Достаточно хорошо видно.</string>
@@ -223,4 +219,17 @@
     <string name="wmo_95">Гроза</string>
     <string name="wmo_96">Гроза с мелким градом</string>
     <string name="wmo_99">Гроза с крупным градом</string>
+    <string name="unexpected_error_screen_title">Непредвиденная ошибка</string>
+    <string name="unexpected_error_screen_description">Произошла непредвиденная ошибка. Чтобы продолжить, перейдите на главный экран и попробуйте снова. Если хотите помочь, создайте обращение на GitHub и приложите следующий отчёт об ошибке.</string>
+    <string name="unexpected_error_screen_label_clip_entry">Отчёт об ошибке</string>
+    <string name="unexpected_error_screen_btn_copy_logs">Копировать всё</string>
+    <string name="unexpected_error_screen_btn_go_home">Главный экран</string>
+    <string name="precip_label_light">Слабые</string>
+    <string name="precip_label_moderate">Умеренные</string>
+    <string name="precip_label_heavy">Сильные</string>
+    <string name="vis_description_very_good">Очень хорошая видимость.</string>
+    <string name="searched_place_edit_tz_title">Выбрать часовой пояс</string>
+    <string name="searched_place_edit_tz_description_value">Часовой пояс места «%1$s» — «%2$s», но устройство его не распознаёт. Чтобы использовать это место, задайте часовой пояс вручную.</string>
+    <string name="searched_place_edit_tz_hint">Поиск часовых поясов…</string>
+    <string name="searched_place_edit_tz_no_search_results_value">Часовые пояса для «%1$s» не найдены</string>
 </resources>

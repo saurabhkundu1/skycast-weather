@@ -144,13 +144,9 @@
     <string name="uv_index_protection_value_none">Lågt under resten av dagen.</string>
     <string name="vis">Sikt</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s km</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s mi</string>
     <string name="vis_description_excellent">Exceptionellt god sikt.</string>
     <string name="vis_description_good">Ganska god sikt för de flesta aktiviteter.</string>
     <string name="vis_description_moderate">Något nedsatt sikt med mindre störningar.</string>

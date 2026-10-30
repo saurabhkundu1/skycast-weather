@@ -21,24 +21,24 @@
     <string name="general_btn_dialog_cancel">Cancel</string>
 
     <string name="credit_weather">Weather data by Open-Meteo.com or WeatherAPI.com, as selected</string>
-    <string name="weather_data_disclaimer">Forecasts are for general information only and may not be accurate for your location or time. Do not rely on this data for personal safety, aviation, marine navigation, emergency planning, or other safety-critical decisions. Consult official meteorological services and relevant authorities.</string>
-    <string name="settings_weather_section">Weather data</string>
-    <string name="settings_weather_provider">Weather service</string>
-    <string name="settings_weather_api_key">WeatherAPI.com key</string>
-    <string name="settings_weather_api_key_saved">Saved securely on this device</string>
-    <string name="settings_weather_api_key_missing">Not set</string>
-    <string name="settings_weather_api_key_remove">Remove saved key</string>
-    <string name="settings_weather_api_key_remove_value">Return to Open-Meteo</string>
-    <string name="settings_weather_api_key_help">Get a personal API key at weatherapi.com. The key is encrypted on this device and sent only to WeatherAPI.com. WeatherAPI.com data is credited in the forecast.</string>
-    <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
+    <string name="weather_data_disclaimer" translatable="false">Forecasts are for general information only and may not be accurate for your location or time. Do not rely on this data for personal safety, aviation, marine navigation, emergency planning, or other safety-critical decisions. Consult official meteorological services and relevant authorities.</string>
+    <string name="settings_weather_section" translatable="false">Weather data</string>
+    <string name="settings_weather_provider" translatable="false">Weather service</string>
+    <string name="settings_weather_api_key" translatable="false">WeatherAPI.com key</string>
+    <string name="settings_weather_api_key_saved" translatable="false">Saved securely on this device</string>
+    <string name="settings_weather_api_key_missing" translatable="false">Not set</string>
+    <string name="settings_weather_api_key_remove" translatable="false">Remove saved key</string>
+    <string name="settings_weather_api_key_remove_value" translatable="false">Return to Open-Meteo</string>
+    <string name="settings_weather_api_key_help" translatable="false">Get a personal API key at weatherapi.com. The key is encrypted on this device and sent only to WeatherAPI.com. WeatherAPI.com data is credited in the forecast.</string>
+    <string name="save" translatable="false">Save</string>
+    <string name="cancel" translatable="false">Cancel</string>
     <string name="credit_geocoding">Geocoding data by Open-Meteo.com</string>
 
     <string name="place_picker_hint_search">Search places…</string>
-    <string name="place_picker_use_current_location">Use current location</string>
-    <string name="place_picker_current_location">Current location</string>
-    <string name="place_picker_location_permission_denied">Location permission was denied. You can still search for a city manually.</string>
-    <string name="place_picker_location_unavailable">Could not determine your location. Check that Location is enabled, or search for a city manually.</string>
+    <string name="place_picker_use_current_location" translatable="false">Use current location</string>
+    <string name="place_picker_current_location" translatable="false">Current location</string>
+    <string name="place_picker_location_permission_denied" translatable="false">Location permission was denied. You can still search for a city manually.</string>
+    <string name="place_picker_location_unavailable" translatable="false">Could not determine your location. Check that Location is enabled, or search for a city manually.</string>
     <string name="place_picker_title_saved_places">Saved places</string>
     <string name="place_picker_title_search_results">Search results</string>
     <string name="place_picker_error_no_internet">You seem to be offline. Connect to the Internet and try again.</string>
@@ -189,13 +189,9 @@
 
     <string name="vis">Visibility</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s km</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s mi</string>
     <string name="vis_description_excellent">Exceptionally clear visibility.</string>
     <string name="vis_description_very_good">Very clear visibility.</string>
     <string name="vis_description_good">Fairly clear visibility for most activities.</string>

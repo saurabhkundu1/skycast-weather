@@ -145,13 +145,9 @@
     <string name="uv_index_protection_value_none">Nizak ostatak dana.</string>
     <string name="vis">Vidljivost</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s km</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s mi</string>
     <string name="vis_description_excellent">Savršeno jasna vidljivost.</string>
     <string name="vis_description_very_good">Vrlo jasna vidljivost.</string>
     <string name="vis_description_good">Umjereno jasna vidljivost za većinu aktivnosti.</string>

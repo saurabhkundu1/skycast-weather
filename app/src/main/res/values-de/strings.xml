@@ -155,13 +155,9 @@
     <string name="uv_index_protection_value_none">Niedrig für den Rest des Tages.</string>
     <string name="vis">Sichtweite</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s km</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s mi</string>
     <string name="vis_description_excellent">Völlig klare Sicht.</string>
     <string name="vis_description_good">Freie Sicht.</string>
     <string name="vis_description_moderate">Ziemlich klare Sicht.</string>

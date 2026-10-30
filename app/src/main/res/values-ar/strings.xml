@@ -159,13 +159,9 @@
 
     <string name="vis">الرؤية</string>
     <string name="vis_unit_m">م</string>
-    <string name="vis_value_m">%s م</string>
     <string name="vis_unit_ft">قدم</string>
-    <string name="vis_value_ft">%s قدم</string>
     <string name="vis_unit_km">كم</string>
-    <string name="vis_value_km">%s كم</string>
     <string name="vis_unit_mi">ميل</string>
-    <string name="vis_value_mi">%s ميل</string>
     <string name="vis_description_excellent">الرؤية واضحة تماماً</string>
     <string name="vis_description_good">الرؤية واضحة</string>
     <string name="vis_description_moderate">الرؤية واضحة إلى حد ما</string>
@@ -224,4 +220,17 @@
     <string name="wmo_95">عاصفة رعدية</string>
     <string name="wmo_96">عاصفة رعدية مع بَرَد خفيف</string>
     <string name="wmo_99">عاصفة رعدية مع بَرَد كثيف</string>
+    <string name="unexpected_error_screen_title">خطأ غير متوقع</string>
+    <string name="unexpected_error_screen_description">حدث خطأ غير متوقع. للمتابعة، انتقل إلى الشاشة الرئيسية وحاول مرة أخرى. إذا أردت المساعدة، أنشئ بلاغًا على GitHub وألصق تقرير الخطأ التالي.</string>
+    <string name="unexpected_error_screen_label_clip_entry">تقرير الخطأ</string>
+    <string name="unexpected_error_screen_btn_copy_logs">نسخ الكل</string>
+    <string name="unexpected_error_screen_btn_go_home">الشاشة الرئيسية</string>
+    <string name="precip_label_light">خفيفة</string>
+    <string name="precip_label_moderate">متوسطة</string>
+    <string name="precip_label_heavy">غزيرة</string>
+    <string name="vis_description_very_good">رؤية جيدة جدًا.</string>
+    <string name="searched_place_edit_tz_title">تعيين المنطقة الزمنية</string>
+    <string name="searched_place_edit_tz_description_value">المنطقة الزمنية لـ %1$s هي «%2$s»، لكن جهازك لا يتعرف عليها. لاستخدام هذا الموقع، عيّن المنطقة الزمنية يدويًا.</string>
+    <string name="searched_place_edit_tz_hint">البحث عن المناطق الزمنية…</string>
+    <string name="searched_place_edit_tz_no_search_results_value">لا توجد مناطق زمنية تطابق «%1$s»</string>
 </resources>

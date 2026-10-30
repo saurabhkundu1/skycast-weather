@@ -165,13 +165,9 @@
 
     <string name="vis">Ορατότητα</string>
     <string name="vis_unit_m">μ</string>
-    <string name="vis_value_m">%s μ</string>
     <string name="vis_unit_ft">π</string>
-    <string name="vis_value_ft">%s π</string>
     <string name="vis_unit_km">χλμ</string>
-    <string name="vis_value_km">%s χλμ</string>
     <string name="vis_unit_mi">μιλ</string>
-    <string name="vis_value_mi">%s μιλ</string>
     <string name="vis_description_excellent">Απόλυτα καθαρή ορατότητα.</string>
     <string name="vis_description_good">Καθαρή ορατότητα.</string>
     <string name="vis_description_moderate">Σχετικά καθαρή ορατότητα.</string>
@@ -230,4 +226,17 @@
     <string name="wmo_95">Καταιγίδα</string>
     <string name="wmo_96">Καταιγίδα με ελαφριά χαλαζόπτωση</string>
     <string name="wmo_99">Καταιγίδα με έντονη χαλαζόπτωση</string>
+    <string name="unexpected_error_screen_title">Απροσδόκητο σφάλμα</string>
+    <string name="unexpected_error_screen_description">Παρουσιάστηκε ένα απροσδόκητο σφάλμα. Για να συνεχίσετε, μεταβείτε στην αρχική οθόνη και δοκιμάστε ξανά. Αν θέλετε να βοηθήσετε, δημιουργήστε ένα ζήτημα στο GitHub και επικολλήστε την παρακάτω αναφορά σφάλματος.</string>
+    <string name="unexpected_error_screen_label_clip_entry">Αναφορά σφάλματος</string>
+    <string name="unexpected_error_screen_btn_copy_logs">Αντιγραφή όλων</string>
+    <string name="unexpected_error_screen_btn_go_home">Αρχική οθόνη</string>
+    <string name="precip_label_light">Ασθενής</string>
+    <string name="precip_label_moderate">Μέτρια</string>
+    <string name="precip_label_heavy">Ισχυρή</string>
+    <string name="vis_description_very_good">Πολύ καλή ορατότητα.</string>
+    <string name="searched_place_edit_tz_title">Ορισμός ζώνης ώρας</string>
+    <string name="searched_place_edit_tz_description_value">Η ζώνη ώρας του %1$s είναι «%2$s», αλλά η συσκευή σας δεν την αναγνωρίζει. Για να χρησιμοποιήσετε αυτήν την τοποθεσία, ορίστε τη ζώνη ώρας χειροκίνητα.</string>
+    <string name="searched_place_edit_tz_hint">Αναζήτηση ζωνών ώρας…</string>
+    <string name="searched_place_edit_tz_no_search_results_value">Δεν βρέθηκαν ζώνες ώρας για «%1$s»</string>
 </resources>

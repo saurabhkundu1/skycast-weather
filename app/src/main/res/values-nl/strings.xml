@@ -167,13 +167,9 @@
 
     <string name="vis">Zicht</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s ft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s km</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s mi</string>
     <string name="vis_description_excellent">Extreem helder zicht</string>
     <string name="vis_description_very_good">Zeer helder zicht</string>
     <string name="vis_description_good">Helder zicht voor de meeste activiteiten</string>

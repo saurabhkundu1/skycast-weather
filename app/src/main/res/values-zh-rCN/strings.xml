@@ -158,13 +158,9 @@
 
     <string name="vis">能见度</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s m</string>
     <string name="vis_unit_ft">英尺</string>
-    <string name="vis_value_ft">%s 英尺</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s km</string>
     <string name="vis_unit_mi">英里</string>
-    <string name="vis_value_mi">%s 英里</string>
     <string name="vis_description_excellent">能见度极佳</string>
     <string name="vis_description_good">能见度好</string>
     <string name="vis_description_moderate">能见度一般</string>

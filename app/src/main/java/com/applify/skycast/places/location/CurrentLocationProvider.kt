@@ -21,6 +21,8 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.CancellationSignal
 import android.os.Looper
+import androidx.annotation.RequiresApi
+import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import com.applify.skycast.R
 import com.applify.skycast.places.Coordinates
@@ -51,14 +53,27 @@ class CurrentLocationProvider(
         }
 
         val manager = context.getSystemService(LocationManager::class.java)
-        val provider = listOf(LocationManager.NETWORK_PROVIDER, LocationManager.GPS_PROVIDER)
+        val hasFineLocation = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        val providers = if (hasFineLocation) {
+            listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
+        } else {
+            listOf(LocationManager.NETWORK_PROVIDER)
+        }
+        val provider = providers
             .firstOrNull { name -> runCatching { manager.isProviderEnabled(name) }.getOrDefault(false) }
             ?: return@withContext null
 
-        val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            getCurrentLocation(manager, provider)
-        } else {
-            getSingleUpdate(manager, provider)
+        val current = try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                getCurrentLocation(manager, provider)
+            } else {
+                getSingleUpdate(manager, provider)
+            }
+        } catch (_: SecurityException) {
+            null
         } ?: return@withContext null
 
         val address = getAddress(current)
@@ -83,6 +98,8 @@ class CurrentLocationProvider(
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
+    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
     private suspend fun getCurrentLocation(
         manager: LocationManager,
         provider: String,
@@ -97,6 +114,7 @@ class CurrentLocationProvider(
     }
 
     @Suppress("DEPRECATION")
+    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
     private suspend fun getSingleUpdate(
         manager: LocationManager,
         provider: String,
@@ -108,6 +126,7 @@ class CurrentLocationProvider(
                     manager.removeUpdates(this)
                 }
 
+                @Deprecated("Deprecated in Android API")
                 override fun onStatusChanged(provider: String?, status: Int, extras: android.os.Bundle?) = Unit
                 override fun onProviderEnabled(provider: String) = Unit
                 override fun onProviderDisabled(provider: String) = Unit

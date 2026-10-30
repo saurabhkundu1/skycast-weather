@@ -161,13 +161,9 @@
 
     <string name="vis">Widzialność</string>
     <string name="vis_unit_m">m</string>
-    <string name="vis_value_m">%s\u202Fm</string>
     <string name="vis_unit_ft">ft</string>
-    <string name="vis_value_ft">%s\u202Fft</string>
     <string name="vis_unit_km">km</string>
-    <string name="vis_value_km">%s\u202Fkm</string>
     <string name="vis_unit_mi">mi</string>
-    <string name="vis_value_mi">%s\u202Fmi</string>
     <string name="vis_description_excellent">Dobra</string> <!-- 10-30 km -->
     <string name="vis_description_good">Umiarkowana</string> <!-- 3-10 km -->
     <string name="vis_description_moderate">Słaba</string> <!-- 1-3 km -->
@@ -233,4 +229,17 @@
     <string name="wmo_95">Burza</string>
     <string name="wmo_96">Burza z\u202Fgradem</string>
     <string name="wmo_99">Silna burza z\u202Fgradem</string>
+    <string name="unexpected_error_screen_title">Nieoczekiwany błąd</string>
+    <string name="unexpected_error_screen_description">Wystąpił nieoczekiwany błąd. Aby kontynuować, wróć do ekranu głównego i spróbuj ponownie. Jeśli chcesz pomóc, utwórz zgłoszenie w serwisie GitHub i wklej poniższy raport o błędzie.</string>
+    <string name="unexpected_error_screen_label_clip_entry">Raport o błędzie</string>
+    <string name="unexpected_error_screen_btn_copy_logs">Kopiuj wszystko</string>
+    <string name="unexpected_error_screen_btn_go_home">Ekran główny</string>
+    <string name="precip_label_light">Słabe</string>
+    <string name="precip_label_moderate">Umiarkowane</string>
+    <string name="precip_label_heavy">Intensywne</string>
+    <string name="vis_description_very_good">Bardzo dobra widoczność.</string>
+    <string name="searched_place_edit_tz_title">Ustaw strefę czasową</string>
+    <string name="searched_place_edit_tz_description_value">Strefa czasowa miejsca %1$s to „%2$s”, ale urządzenie jej nie rozpoznaje. Aby użyć tej lokalizacji, ustaw strefę czasową ręcznie.</string>
+    <string name="searched_place_edit_tz_hint">Szukaj stref czasowych…</string>
+    <string name="searched_place_edit_tz_no_search_results_value">Brak stref czasowych pasujących do „%1$s”</string>
 </resources>

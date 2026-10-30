@@ -33,6 +33,7 @@ import com.applify.skycast.places.selected.SelectedPlaceRepository
 import com.applify.skycast.unexpectederror.UnexpectedErrorConsumer
 import com.applify.skycast.unexpectederror.UnexpectedErrorRepository
 import com.applify.skycast.unexpectederror.UnexpectedErrorSetter
+import com.applify.skycast.widget.ForecastWidgetProvider
 
 class AppContainer(private val appContext: Context) {
     val prefs: SharedPreferences get() = appContext.getSharedPreferences("prefs", Context.MODE_PRIVATE)
@@ -68,6 +69,6 @@ class AppContainer(private val appContext: Context) {
     val getSavedPlaces get() = GetSavedPlaces(selectedUnitsRepo, selectedPlaceRepo, savedPlacesRepo, forecastRepo)
     val searchPlaces get() = SearchPlaces(userAgent)
     val currentLocationProvider get() = CurrentLocationProvider(appContext, userAgent)
-    val selectPlace get() = SelectPlace(selectedPlaceRepo, savedPlacesRepo)
+    val selectPlace get() = SelectPlace(selectedPlaceRepo, savedPlacesRepo) { ForecastWidgetProvider.refresh(appContext) }
     val deletePlace get() = DeletePlace(savedPlacesRepo, forecastCacher)
 }

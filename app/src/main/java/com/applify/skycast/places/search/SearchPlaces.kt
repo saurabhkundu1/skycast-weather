@@ -19,6 +19,7 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
+import java.net.URLEncoder
 import javax.net.ssl.HttpsURLConnection
 
 class SearchPlaces(private val userAgent: String) {
@@ -78,9 +79,9 @@ class SearchPlaces(private val userAgent: String) {
 
     private fun openMeteoUrl(query: String, languageCode: String): String =
         "https://geocoding-api.open-meteo.com/v1/search" +
-                "?name=$query" +
+                "?name=${URLEncoder.encode(query, "UTF-8")}" +
                 "&count=100" +
-                "&language=$languageCode" +
+                "&language=${URLEncoder.encode(languageCode, "UTF-8")}" +
                 "&format=json"
 
     private fun JSONObject.getStringOrNull(name: String): String? =
