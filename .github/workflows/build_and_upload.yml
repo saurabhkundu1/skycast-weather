@@ -36,7 +36,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEYSTORE_ALIAS: skycast-recovery
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN || secrets.GH_PAT }}
+          PAT_TOKEN: ${{ secrets.GH_PAT || secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN }}
         run: |
           set -euo pipefail
           : "${KEYSTORE_BASE64:?KEYSTORE_BASE64 secret is required}"
@@ -85,10 +85,12 @@ jobs:
           "$BUILD_TOOLS_DIR/aapt" dump badging "$APK_PATH" | grep -F "package: name='$PACKAGE_NAME'"
           "$BUILD_TOOLS_DIR/apksigner" verify --verbose --print-certs "$APK_PATH" > "$RUNNER_TEMP/apksigner.txt"
           grep -F 'certificate SHA-256 digest:' "$RUNNER_TEMP/apksigner.txt" || true
-          test "$(grep -Ec '^Signer #[0-9]+:?[[:space:]]+certificate SHA-256 digest:' "$RUNNER_TEMP/apksigner.txt")" = 1
-          actual="$(awk -F': ' '/certificate SHA-256 digest:/ {print $NF; exit}' "$RUNNER_TEMP/apksigner.txt" | tr -d ':' | tr '[:lower:]' '[:upper:]')"
+          fingerprints="$(awk -F': ' '/certificate SHA-256 digest:/ {print $NF}' "$RUNNER_TEMP/apksigner.txt" | tr -d ':' | tr '[:lower:]' '[:upper:]' | sort -u)"
+          signer_count="$(printf '%s\n' "$fingerprints" | sed '/^$/d' | wc -l | tr -d '[:space:]')"
           expected="$(printf '%s' "$EXPECTED_SIGNER_SHA256" | tr -d ':' | tr '[:lower:]' '[:upper:]')"
-          printf 'APK signer certificate SHA-256: %s\nExpected certificate SHA-256: %s\n' "${actual:-missing}" "$expected"
+          printf 'APK signer certificate SHA-256: %s\nExpected certificate SHA-256: %s\n' "${fingerprints:-missing}" "$expected"
+          test "$signer_count" = 1
+          actual="$fingerprints"
           test "$actual" = "$expected"
           test "$actual" != "DE62E0D386DB9B6FC616ADF6573F458AAC8D04F873007C73B8585FBEEF0960255"
           version_name="$(sed -n 's/^[[:space:]]*versionName = "\([^"]*\)"/\1/p' app/build.gradle.kts | head -n 1)"
@@ -128,7 +130,7 @@ jobs:
 
       - name: Notify Applify F-Droid repository
         env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN || secrets.GH_PAT }}
+          PAT_TOKEN: ${{ secrets.GH_PAT || secrets.PAT_TOKEN || secrets.REPOSITORY_DISPATCH_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs.tag }}
           VERSION_NAME: ${{ steps.release.outputs.version_name }}
           VERSION_CODE: ${{ steps.release.outputs.version_code }}
