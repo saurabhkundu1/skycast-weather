@@ -76,8 +76,8 @@ jobs:
           test -n "$BUILD_TOOLS_DIR"
           "$BUILD_TOOLS_DIR/aapt" dump badging "$APK_PATH" | grep -F "package: name='$PACKAGE_NAME'"
           "$BUILD_TOOLS_DIR/apksigner" verify --verbose --print-certs "$APK_PATH" > "$RUNNER_TEMP/apksigner.txt"
-          test "$(grep -Ec '^Signer #[0-9]+ certificate SHA-256 digest:' "$RUNNER_TEMP/apksigner.txt")" = 1
-          actual="$(sed -n 's/^Signer #1 certificate SHA-256 digest: //p' "$RUNNER_TEMP/apksigner.txt" | tr -d ':' | tr '[:lower:]' '[:upper:]')"
+          test "$(grep -Ec '^Signer #[0-9]+:?[[:space:]]+certificate SHA-256 digest:' "$RUNNER_TEMP/apksigner.txt")" = 1
+          actual="$(awk -F': ' '/certificate SHA-256 digest:/ {print $NF; exit}' "$RUNNER_TEMP/apksigner.txt" | tr -d ':' | tr '[:lower:]' '[:upper:]')"
           expected="$(printf '%s' "$EXPECTED_SIGNER_SHA256" | tr -d ':' | tr '[:lower:]' '[:upper:]')"
           test "$actual" = "$expected"
           test "$actual" != "DE62E0D386DB9B6FC616ADF6573F458AAC8D04F873007C73B8585FBEEF0960255"
