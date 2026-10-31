@@ -50,11 +50,19 @@ jobs:
       - name: Decode replacement keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS: skycast-recovery
+          EXPECTED_SIGNER_SHA256: 8873C9944377ED68DCDB98C5F1FDCCE10B4BD8359DA0271CC33931DF58EE97E7
         run: |
           set -euo pipefail
           umask 077
           printf '%s' "$KEYSTORE_BASE64" | tr -d '\r\n ' | base64 --decode > app/release.keystore
           test -s app/release.keystore
+          actual="$(keytool -list -v -keystore app/release.keystore -storepass "$KEYSTORE_PASSWORD" -alias "$KEYSTORE_ALIAS" 2>/dev/null | sed -n 's/^[[:space:]]*SHA256:[[:space:]]*//p' | head -n 1 | tr -d ':' | tr '[:lower:]' '[:upper:]')"
+          expected="$(printf '%s' "$EXPECTED_SIGNER_SHA256" | tr -d ':' | tr '[:lower:]' '[:upper:]')"
+          printf 'Decoded keystore certificate SHA-256: %s\n' "$actual"
+          test -n "$actual"
+          test "$actual" = "$expected"
 
       - name: Make Gradle wrapper executable
         run: chmod +x gradlew
