@@ -216,4 +216,15 @@
     <string name="searched_place_edit_tz_no_search_results_value">Inga matchande tidszoner för \"%1$s\"</string>
     <string name="searched_place_edit_tz_description_value">%1$ss tidszon är \"%2$s\", som inte känns igen av din enhet. För att använda denna plats, ange dess tidszon manuellt.</string>
     <string name="vis_description_very_good">Mycket god sikt.</string>
+    <string name="air_quality_title">Luftkvalitet</string>
+    <string name="air_quality_european_aqi">Europeiskt AQI %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Modelluppskattning: CAMS ENSEMBLE via Open-Meteo</string>
+    <string name="air_quality_cached">I cache: %1$s</string>
+    <string name="air_quality_band_good">Bra</string>
+    <string name="air_quality_band_fair">Acceptabel</string>
+    <string name="air_quality_band_moderate">Måttlig</string>
+    <string name="air_quality_band_poor">Dålig</string>
+    <string name="air_quality_band_very_poor">Mycket dålig</string>
+    <string name="air_quality_band_extremely_poor">Extremt dålig</string>
 </resources>

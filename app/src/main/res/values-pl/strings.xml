@@ -242,4 +242,15 @@
     <string name="searched_place_edit_tz_description_value">Strefa czasowa miejsca %1$s to „%2$s”, ale urządzenie jej nie rozpoznaje. Aby użyć tej lokalizacji, ustaw strefę czasową ręcznie.</string>
     <string name="searched_place_edit_tz_hint">Szukaj stref czasowych…</string>
     <string name="searched_place_edit_tz_no_search_results_value">Brak stref czasowych pasujących do „%1$s”</string>
+    <string name="air_quality_title">Jakość powietrza</string>
+    <string name="air_quality_european_aqi">Europejski AQI %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Szacunek modelu: CAMS ENSEMBLE przez Open-Meteo</string>
+    <string name="air_quality_cached">W pamięci podręcznej: %1$s</string>
+    <string name="air_quality_band_good">Dobra</string>
+    <string name="air_quality_band_fair">Umiarkowana</string>
+    <string name="air_quality_band_moderate">Umiarkowana</string>
+    <string name="air_quality_band_poor">Zła</string>
+    <string name="air_quality_band_very_poor">Bardzo zła</string>
+    <string name="air_quality_band_extremely_poor">Niezwykle zła</string>
 </resources>

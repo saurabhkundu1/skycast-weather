@@ -233,4 +233,15 @@
     <string name="searched_place_edit_tz_description_value">المنطقة الزمنية لـ %1$s هي «%2$s»، لكن جهازك لا يتعرف عليها. لاستخدام هذا الموقع، عيّن المنطقة الزمنية يدويًا.</string>
     <string name="searched_place_edit_tz_hint">البحث عن المناطق الزمنية…</string>
     <string name="searched_place_edit_tz_no_search_results_value">لا توجد مناطق زمنية تطابق «%1$s»</string>
+    <string name="air_quality_title">جودة الهواء</string>
+    <string name="air_quality_european_aqi">مؤشر جودة الهواء الأوروبي %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s ميكروغرام/م³</string>
+    <string name="air_quality_source">تقدير النموذج: CAMS ENSEMBLE عبر Open-Meteo</string>
+    <string name="air_quality_cached">مخزّن مؤقتًا: %1$s</string>
+    <string name="air_quality_band_good">جيد</string>
+    <string name="air_quality_band_fair">مقبول</string>
+    <string name="air_quality_band_moderate">متوسط</string>
+    <string name="air_quality_band_poor">ضعيف</string>
+    <string name="air_quality_band_very_poor">ضعيف جدًا</string>
+    <string name="air_quality_band_extremely_poor">ضعيف للغاية</string>
 </resources>

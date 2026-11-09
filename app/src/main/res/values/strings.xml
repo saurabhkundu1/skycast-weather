@@ -12,6 +12,11 @@
 
 <resources>
     <string name="app_name">Skycast</string>
+    <string name="air_quality_title">Air quality</string>
+    <string name="air_quality_european_aqi">EU AQI %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Model estimate: CAMS ENSEMBLE via Open-Meteo</string>
+    <string name="air_quality_cached">Cached: %1$s</string>
     <string name="general_error_failed_to_download">Failed to download forecast. Connect to the Internet and try again.</string>
     <string name="general_error_outdated">Your forecast data has expired. Connect to the Internet and try again.</string>
     <string name="general_error_no_selected_place">No selected place.</string>
@@ -255,4 +260,10 @@
     <string name="searched_place_edit_tz_description_value">%1$s\'s time zone is \"%2$s\" which is not recognized by your device. To use this location, set its time zone manually.</string>
     <string name="searched_place_edit_tz_hint">Search time zones…</string>
     <string name="searched_place_edit_tz_no_search_results_value">No matching time zones for \"%1$s\"</string>
+    <string name="air_quality_band_good">Good</string>
+    <string name="air_quality_band_fair">Fair</string>
+    <string name="air_quality_band_moderate">Moderate</string>
+    <string name="air_quality_band_poor">Poor</string>
+    <string name="air_quality_band_very_poor">Very poor</string>
+    <string name="air_quality_band_extremely_poor">Extremely poor</string>
 </resources>

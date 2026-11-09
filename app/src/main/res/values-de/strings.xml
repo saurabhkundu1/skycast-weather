@@ -222,4 +222,15 @@
     <string name="searched_place_edit_tz_description_value">Die Zeitzone von %1$s ist \"%2$s\", wird von Ihrem Gerät jedoch nicht erkannt. Um diesen Standort zu verwenden, stellen Sie die Zeitzone manuell ein.</string>
     <string name="searched_place_edit_tz_hint">Zeitzonen suchen…</string>
     <string name="searched_place_edit_tz_no_search_results_value">Keine passenden Zeitzonen für \"%1$s\"</string>
+    <string name="air_quality_title">Luftqualität</string>
+    <string name="air_quality_european_aqi">EU-AQI %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Modellschätzung: CAMS ENSEMBLE über Open-Meteo</string>
+    <string name="air_quality_cached">Im Cache: %1$s</string>
+    <string name="air_quality_band_good">Gut</string>
+    <string name="air_quality_band_fair">Akzeptabel</string>
+    <string name="air_quality_band_moderate">Mäßig</string>
+    <string name="air_quality_band_poor">Schlecht</string>
+    <string name="air_quality_band_very_poor">Sehr schlecht</string>
+    <string name="air_quality_band_extremely_poor">Äußerst schlecht</string>
 </resources>

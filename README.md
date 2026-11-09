@@ -59,7 +59,7 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
 
 ## ✨ Features
 
-- 🔒 **Privacy-First Design**: Location search works through Open-Meteo geocoding. Optional coarse device location can select your current place; its coordinates are sent to Open-Meteo for weather and time-zone data.
+- 🔒 **Privacy-First Design**: Location search works through Open-Meteo geocoding. Optional coarse device location can select your current place; its coordinates go to Open-Meteo for time-zone and air-quality data, and to the selected weather provider for forecasts.
 - 🔑 **No API Key Required**: Ready to use right out of the box with zero setup.
 - 📴 **Offline Support**: Caches weather data locally for offline viewing and instant startup.
 - 📡 **Data Efficient**: Minimal network usage, optimized data fetching and bandwidth saving.
@@ -79,6 +79,7 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
   - Atmospheric pressure and pressure tendencies.
   - Visibility distances.
   - Sunrise, sunset, and daylight duration.
+- 💨 **Air Quality**: View a European AQI and PM2.5 model estimate for the selected place, credited to CAMS ENSEMBLE via Open-Meteo. When the network is unavailable, an estimate cached within the last 24 hours remains visible with its cache time; it is not a local sensor measurement.
 - 📐 **Customizable Units**: Choose preferred units for temperature, wind speed, pressure, precipitation, and visibility.
 - 🌐 **Multilingual Support**: Available in 15+ languages including English, Spanish, French, German, Russian, Vietnamese, Croatian, Chinese (Simplified & Traditional), Polish, Swedish, Dutch, Arabic, Czech, and Greek.
 
@@ -91,7 +92,7 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
 - **Navigation**: Navigation Compose
 - **Architecture**: Unidirectional Data Flow (UDF) with `ViewModel`, `StateFlow`, and Kotlin Coroutines
 - **Build Tool**: Gradle (Kotlin DSL) with Android Gradle Plugin 9.x & JDK 21
-- **Data Source**: [Open-Meteo API](https://open-meteo.com/) (Forecast & Geocoding APIs)
+- **Data Source**: [Open-Meteo APIs](https://open-meteo.com/) (Forecast, Air Quality & Geocoding), with optional WeatherAPI forecasts
 - **CI/CD**: GitHub Actions for automated build, signing, and artifact publication
 
 ---
@@ -110,7 +111,7 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
    - [ ] Visibility
    - [ ] Feels like
 2. **Air Quality**
-   - [ ] Home screen tiles
+   - [x] Home screen tiles
    - [ ] Air quality graphs
 3. **Weather Alerts**
 4. **Home Screen Widgets** [x]

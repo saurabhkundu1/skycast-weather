@@ -232,4 +232,15 @@
     <string name="searched_place_edit_tz_description_value">Le fuseau horaire de %1$s est « %2$s », mais votre appareil ne le reconnaît pas. Pour utiliser cet emplacement, définissez le fuseau horaire manuellement.</string>
     <string name="searched_place_edit_tz_hint">Rechercher des fuseaux horaires…</string>
     <string name="searched_place_edit_tz_no_search_results_value">Aucun fuseau horaire correspondant à « %1$s »</string>
+    <string name="air_quality_title">Qualité de l’air</string>
+    <string name="air_quality_european_aqi">IQA européen %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Estimation du modèle : CAMS ENSEMBLE via Open-Meteo</string>
+    <string name="air_quality_cached">En cache : %1$s</string>
+    <string name="air_quality_band_good">Bonne</string>
+    <string name="air_quality_band_fair">Correcte</string>
+    <string name="air_quality_band_moderate">Modérée</string>
+    <string name="air_quality_band_poor">Mauvaise</string>
+    <string name="air_quality_band_very_poor">Très mauvaise</string>
+    <string name="air_quality_band_extremely_poor">Extrêmement mauvaise</string>
 </resources>

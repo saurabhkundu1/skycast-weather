@@ -232,4 +232,15 @@
     <string name="searched_place_edit_tz_description_value">Часовой пояс места «%1$s» — «%2$s», но устройство его не распознаёт. Чтобы использовать это место, задайте часовой пояс вручную.</string>
     <string name="searched_place_edit_tz_hint">Поиск часовых поясов…</string>
     <string name="searched_place_edit_tz_no_search_results_value">Часовые пояса для «%1$s» не найдены</string>
+    <string name="air_quality_title">Качество воздуха</string>
+    <string name="air_quality_european_aqi">Европейский AQI %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Оценка модели: CAMS ENSEMBLE через Open-Meteo</string>
+    <string name="air_quality_cached">В кэше: %1$s</string>
+    <string name="air_quality_band_good">Хорошее</string>
+    <string name="air_quality_band_fair">Удовлетворительное</string>
+    <string name="air_quality_band_moderate">Умеренное</string>
+    <string name="air_quality_band_poor">Плохое</string>
+    <string name="air_quality_band_very_poor">Очень плохое</string>
+    <string name="air_quality_band_extremely_poor">Крайне плохое</string>
 </resources>

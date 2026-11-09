@@ -17,6 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.applify.skycast.App
+import com.applify.skycast.airquality.AirQualityReading
+import com.applify.skycast.airquality.AirQualityRepository
 import com.applify.skycast.common.util.launchCatching
 import com.applify.skycast.forecast.ForecastRepository
 import com.applify.skycast.forecast.units.SelectedUnitsRepository
@@ -44,6 +46,8 @@ import com.applify.skycast.summary.visibility.getVisibilitySummary
 import com.applify.skycast.summary.wind.WindSummary
 import com.applify.skycast.summary.wind.getWindSummary
 import com.applify.skycast.unexpectederror.UnexpectedErrorSetter
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.time.Instant
@@ -52,10 +56,15 @@ class SummaryViewModel(
     private val placeRepo: SelectedPlaceRepository,
     private val unitsRepo: SelectedUnitsRepository,
     private val forecastRepo: ForecastRepository,
+    private val airQualityRepo: AirQualityRepository,
     private val unexpectedErrorSetter: UnexpectedErrorSetter
 ) : ViewModel() {
     private val _state = MutableStateFlow<SummaryState>(SummaryState.Initial)
     val state = _state.asStateFlow()
+    private val _airQuality = MutableStateFlow<AirQualityReading?>(null)
+    val airQuality = _airQuality.asStateFlow()
+    private var airQualityLocationId: String? = null
+    private var airQualityJob: Job? = null
 
     fun getSummary() {
         viewModelScope.launchCatching(unexpectedErrorSetter) {
@@ -65,7 +74,27 @@ class SummaryViewModel(
             if (_state.value !is SummaryState.Success) {
                 _state.value = SummaryState.Loading
             }
+            refreshAirQuality()
             _state.value = getState()
+        }
+    }
+
+    private suspend fun refreshAirQuality() {
+        airQualityJob?.cancel()
+        val location = placeRepo.getSelectedPlace()?.location
+        if (location == null) {
+            airQualityLocationId = null
+            _airQuality.value = null
+            return
+        }
+        val locationId = location.coordinates.id
+        if (airQualityLocationId != locationId) _airQuality.value = null
+        airQualityLocationId = locationId
+        airQualityJob = viewModelScope.launch {
+            val reading = airQualityRepo.get(location)
+            if (placeRepo.getSelectedPlace()?.location?.coordinates?.id == locationId) {
+                _airQuality.value = reading
+            }
         }
     }
     
@@ -166,6 +195,7 @@ class SummaryViewModel(
                     container.selectedPlaceRepo,
                     container.selectedUnitsRepo,
                     container.forecastRepo,
+                    container.airQualityRepo,
                     container.unexpectedErrorSetter
                 ) as T
             }

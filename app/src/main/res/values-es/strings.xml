@@ -236,4 +236,15 @@
     <string name="searched_place_edit_tz_description_value">La zona horaria de %1$s es «%2$s», pero el dispositivo no la reconoce. Para usar esta ubicación, establece la zona horaria manualmente.</string>
     <string name="searched_place_edit_tz_hint">Buscar zonas horarias…</string>
     <string name="searched_place_edit_tz_no_search_results_value">No hay zonas horarias que coincidan con «%1$s»</string>
+    <string name="air_quality_title">Calidad del aire</string>
+    <string name="air_quality_european_aqi">AQI europeo %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Estimación del modelo: CAMS ENSEMBLE a través de Open-Meteo</string>
+    <string name="air_quality_cached">En caché: %1$s</string>
+    <string name="air_quality_band_good">Buena</string>
+    <string name="air_quality_band_fair">Razonable</string>
+    <string name="air_quality_band_moderate">Moderada</string>
+    <string name="air_quality_band_poor">Mala</string>
+    <string name="air_quality_band_very_poor">Muy mala</string>
+    <string name="air_quality_band_extremely_poor">Extremadamente mala</string>
 </resources>

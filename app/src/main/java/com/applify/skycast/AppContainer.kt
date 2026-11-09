@@ -14,6 +14,7 @@ package com.applify.skycast
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.applify.skycast.airquality.AirQualityRepository
 import com.applify.skycast.common.util.getAppVersionName
 import com.applify.skycast.common.util.getUserAgent
 import com.applify.skycast.forecast.ForecastRepository
@@ -59,6 +60,10 @@ class AppContainer(private val appContext: Context) {
             weatherProviderRepository = weatherProviderRepo,
             weatherApiDownloader = WeatherApiDownloader(userAgent)
         )
+    }
+
+    val airQualityRepo by lazy {
+        AirQualityRepository(prefs, InternetChecker(appContext), userAgent)
     }
 
     val selectedPlaceRepo by lazy { SelectedPlaceRepository(prefs, savedPlacesRepo) }

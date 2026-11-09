@@ -239,4 +239,15 @@
     <string name="searched_place_edit_tz_description_value">Časové pásmo místa %1$s je „%2$s“, ale zařízení ho nerozpoznává. Chcete-li toto místo použít, nastavte časové pásmo ručně.</string>
     <string name="searched_place_edit_tz_hint">Hledat časová pásma…</string>
     <string name="searched_place_edit_tz_no_search_results_value">Časová pásma odpovídající „%1$s“ nebyla nalezena</string>
+    <string name="air_quality_title">Kvalita ovzduší</string>
+    <string name="air_quality_european_aqi">Evropský AQI %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Odhad modelu: CAMS ENSEMBLE přes Open-Meteo</string>
+    <string name="air_quality_cached">V mezipaměti: %1$s</string>
+    <string name="air_quality_band_good">Dobrá</string>
+    <string name="air_quality_band_fair">Přijatelná</string>
+    <string name="air_quality_band_moderate">Mírná</string>
+    <string name="air_quality_band_poor">Špatná</string>
+    <string name="air_quality_band_very_poor">Velmi špatná</string>
+    <string name="air_quality_band_extremely_poor">Mimořádně špatná</string>
 </resources>

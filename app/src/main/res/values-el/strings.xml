@@ -239,4 +239,15 @@
     <string name="searched_place_edit_tz_description_value">Η ζώνη ώρας του %1$s είναι «%2$s», αλλά η συσκευή σας δεν την αναγνωρίζει. Για να χρησιμοποιήσετε αυτήν την τοποθεσία, ορίστε τη ζώνη ώρας χειροκίνητα.</string>
     <string name="searched_place_edit_tz_hint">Αναζήτηση ζωνών ώρας…</string>
     <string name="searched_place_edit_tz_no_search_results_value">Δεν βρέθηκαν ζώνες ώρας για «%1$s»</string>
+    <string name="air_quality_title">Ποιότητα αέρα</string>
+    <string name="air_quality_european_aqi">Ευρωπαϊκός AQI %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Εκτίμηση μοντέλου: CAMS ENSEMBLE μέσω Open-Meteo</string>
+    <string name="air_quality_cached">Στην προσωρινή μνήμη: %1$s</string>
+    <string name="air_quality_band_good">Καλή</string>
+    <string name="air_quality_band_fair">Μέτρια</string>
+    <string name="air_quality_band_moderate">Μέτρια</string>
+    <string name="air_quality_band_poor">Κακή</string>
+    <string name="air_quality_band_very_poor">Πολύ κακή</string>
+    <string name="air_quality_band_extremely_poor">Εξαιρετικά κακή</string>
 </resources>

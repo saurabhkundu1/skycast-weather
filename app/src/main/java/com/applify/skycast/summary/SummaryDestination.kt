@@ -61,6 +61,7 @@ fun SummaryDestination(
 
     SummaryScreen(
         summaryState = summaryVM.state.collectAsState().value,
+        airQuality = summaryVM.airQuality.collectAsState().value,
         onHourlySectionClick = onHourlySectionClick,
         onDayClick = onDayClick,
         onSettingsButtonClick = onSettingsButtonClick,

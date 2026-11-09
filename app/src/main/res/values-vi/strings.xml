@@ -232,4 +232,15 @@
     <string name="searched_place_edit_tz_description_value">Múi giờ của %1$s là “%2$s”, nhưng thiết bị không nhận dạng được. Để sử dụng địa điểm này, hãy đặt múi giờ thủ công.</string>
     <string name="searched_place_edit_tz_hint">Tìm múi giờ…</string>
     <string name="searched_place_edit_tz_no_search_results_value">Không có múi giờ phù hợp với “%1$s”</string>
+    <string name="air_quality_title">Chất lượng không khí</string>
+    <string name="air_quality_european_aqi">AQI châu Âu %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">Ước tính mô hình: CAMS ENSEMBLE qua Open-Meteo</string>
+    <string name="air_quality_cached">Trong bộ nhớ đệm: %1$s</string>
+    <string name="air_quality_band_good">Tốt</string>
+    <string name="air_quality_band_fair">Khá</string>
+    <string name="air_quality_band_moderate">Trung bình</string>
+    <string name="air_quality_band_poor">Kém</string>
+    <string name="air_quality_band_very_poor">Rất kém</string>
+    <string name="air_quality_band_extremely_poor">Cực kỳ kém</string>
 </resources>

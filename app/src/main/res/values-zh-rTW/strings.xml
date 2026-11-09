@@ -219,4 +219,15 @@
     <string name="wmo_95">雷暴雨</string>
     <string name="wmo_96">雷暴雨夾冰雹</string>
     <string name="wmo_99">雷暴雨夾大冰雹</string>
+    <string name="air_quality_title">空氣品質</string>
+    <string name="air_quality_european_aqi">歐洲 AQI %1$d</string>
+    <string name="air_quality_pm25">PM2.5 %1$s µg/m³</string>
+    <string name="air_quality_source">模型估算：CAMS ENSEMBLE（透過 Open-Meteo）</string>
+    <string name="air_quality_cached">快取時間：%1$s</string>
+    <string name="air_quality_band_good">良好</string>
+    <string name="air_quality_band_fair">尚可</string>
+    <string name="air_quality_band_moderate">普通</string>
+    <string name="air_quality_band_poor">不佳</string>
+    <string name="air_quality_band_very_poor">很差</string>
+    <string name="air_quality_band_extremely_poor">極差</string>
 </resources>

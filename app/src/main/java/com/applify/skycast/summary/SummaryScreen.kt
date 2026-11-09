@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.applify.skycast.R
+import com.applify.skycast.airquality.AirQualityReading
 import com.applify.skycast.common.compose.FailedToDownloadErrorScreen
 import com.applify.skycast.common.compose.NoSelectedPlaceErrorScreen
 import com.applify.skycast.common.compose.OutdatedErrorScreen
@@ -43,6 +44,7 @@ import com.applify.skycast.places.picker.compose.PlacePickerSearchBar
 import com.applify.skycast.places.search.SearchedPlace
 import com.applify.skycast.summary.daily.compose.DailySummaryColumn
 import com.applify.skycast.summary.daily.compose.DailySummaryColumnSkeleton
+import com.applify.skycast.summary.airquality.compose.AirQualitySummary
 import com.applify.skycast.summary.feelslike.compose.FeelsLikeSummary
 import com.applify.skycast.summary.hourly.compose.HourSummaryLazyRow
 import com.applify.skycast.summary.hourly.compose.HourSummaryLazyRowSkeleton
@@ -60,6 +62,7 @@ import java.time.LocalDate
 @Composable
 fun SummaryScreen(
     summaryState: SummaryState,
+    airQuality: AirQualityReading?,
     onHourlySectionClick: () -> Unit,
     onDayClick: (date: LocalDate) -> Unit,
     onSettingsButtonClick: () -> Unit,
@@ -122,6 +125,7 @@ fun SummaryScreen(
             when (it) {
                 is SummaryState.Success -> SummaryGrid(
                     state = it,
+                    airQuality = airQuality,
                     onHourlyClick = onHourlySectionClick,
                     onDayClick = onDayClick,
                     onPrecipitationClick = onPrecipitationClick,
@@ -156,6 +160,7 @@ fun SummaryScreen(
 @Composable
 private fun SummaryGrid(
     state: SummaryState.Success,
+    airQuality: AirQualityReading?,
     onHourlyClick: () -> Unit,
     onDayClick: (date: LocalDate) -> Unit,
     onPrecipitationClick: () -> Unit,
@@ -201,6 +206,14 @@ private fun SummaryGrid(
                 state = state.uvIndex,
                 modifier = Modifier.fillMaxWidth()
             )
+        }
+        if (airQuality != null) {
+            item {
+                AirQualitySummary(
+                    reading = airQuality,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
         item {
             WindSummary(
