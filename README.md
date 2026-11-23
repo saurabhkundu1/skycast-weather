@@ -21,7 +21,7 @@ Modern weather app with graphs and thoughtful data visualization for Android. Sp
     <a href="https://github.com/saurabhkundu1/skycast-weather/releases/latest">
         <img src="https://img.shields.io/github/v/release/saurabhkundu1/skycast-weather?style=flat-square&label=Latest%20Release" alt="Latest Release"/>
     </a>
-    <a href="LICENSE.txt">
+    <a href="LICENSE">
         <img src="https://img.shields.io/github/license/saurabhkundu1/skycast-weather?style=flat-square&color=blue" alt="License: GPL-3.0"/>
     </a>
     <a href="https://hosted.weblate.org/projects/bura/">
@@ -194,6 +194,6 @@ The Open-Meteo geocoding API works best with clean, single-word search terms (e.
 - **Icons**: Sun, moon, sunrise, and sunset icons adapted from [Feather Icons](https://feathericons.com/) (Licensed under [MIT License](https://github.com/feathericons/feather/blob/main/LICENSE))
 
 ### License
-Skycast is free software licensed under the **GNU General Public License v3.0**. See the [LICENSE.txt](LICENSE.txt) file for details.
+Skycast is free software licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
 
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
