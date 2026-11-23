@@ -1,10 +1,10 @@
 # Skycast 🌦️
 
-Modern weather app with graphs and thoughtful data visualization for Android. Spiritual successor to [Prognoza](https://github.com/davidtakac/prognoza).
+Modern weather application with interactive graphs, air quality monitoring, and thoughtful data visualization for Android. Spiritual successor to [Prognoza](https://github.com/davidtakac/prognoza).
 
 <div align="center">
     <a href="https://saurabhkundu1.github.io/Applify/">
-        <img src="assets/badge_izzyondroid.png" height="70" alt="IzzyOnDroid"/>
+        <img src="assets/badge_izzyondroid.png" height="70" alt="Applify Repository"/>
     </a>
     <a href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/saurabhkundu1/skycast-weather">
         <img src="assets/badge_obtainium.png" height="70" alt="Get it on Obtainium"/>
@@ -15,14 +15,20 @@ Modern weather app with graphs and thoughtful data visualization for Android. Sp
 </div>
 
 <p align="center">
-    <a href="https://github.com/saurabhkundu1/skycast-weather/actions/workflows/build_and_upload.yml">
-        <img src="https://img.shields.io/github/actions/workflow/status/saurabhkundu1/skycast-weather/build_and_upload.yml?style=flat-square&label=Build" alt="Build Status"/>
+    <a href="https://github.com/saurabhkundu1/skycast-weather/actions/workflows/android-ci.yml">
+        <img src="https://img.shields.io/github/actions/workflow/status/saurabhkundu1/skycast-weather/android-ci.yml?style=flat-square&label=Android%20CI" alt="Android CI Status"/>
     </a>
-    <a href="https://github.com/saurabhkundu1/skycast-weather/releases/latest">
-        <img src="https://img.shields.io/github/v/release/saurabhkundu1/skycast-weather?style=flat-square&label=Latest%20Release" alt="Latest Release"/>
+    <a href="https://developer.android.com">
+        <img src="https://img.shields.io/badge/Platform-Android%209.0%2B%20(API%2028%2B)-green.svg?style=flat-square" alt="Platform"/>
+    </a>
+    <a href="https://developer.android.com">
+        <img src="https://img.shields.io/badge/Compile%20SDK-37-brightgreen.svg?style=flat-square" alt="Compile SDK 37"/>
+    </a>
+    <a href="https://developer.android.com">
+        <img src="https://img.shields.io/badge/Target%20SDK-37-brightgreen.svg?style=flat-square" alt="Target SDK 37"/>
     </a>
     <a href="LICENSE">
-        <img src="https://img.shields.io/github/license/saurabhkundu1/skycast-weather?style=flat-square&color=blue" alt="License: GPL-3.0"/>
+        <img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg?style=flat-square" alt="License: GPL-3.0"/>
     </a>
     <a href="https://hosted.weblate.org/projects/bura/">
         <img src="https://img.shields.io/weblate/status/bura?style=flat-square&label=Translations" alt="Weblate Translation Status"/>
@@ -33,7 +39,7 @@ Modern weather app with graphs and thoughtful data visualization for Android. Sp
 
 ## 🌟 Overview
 
-**Skycast** transforms and visualizes weather data from [Open-Meteo.com](https://open-meteo.com) to provide essential weather information at a glance, while allowing you to dive deeper through elegant interactive graphs and rich metrics.
+**Skycast** transforms and visualizes weather data from [Open-Meteo.com](https://open-meteo.com) to provide essential weather information at a glance, while allowing you to dive deeper through elegant interactive graphs, air quality diagnostics, and rich meteorological metrics.
 
 Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lightweight weather experience without tracking, ads, or requiring unnecessary device permissions.
 
@@ -63,7 +69,7 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
 - 🔑 **No API Key Required**: Ready to use right out of the box with zero setup.
 - 📴 **Offline Support**: Caches weather data locally for offline viewing and instant startup.
 - 📡 **Data Efficient**: Minimal network usage, optimized data fetching and bandwidth saving.
-- 🎨 **Material You / Material Design 3**: Modern interface supporting Dynamic Color (Android 12+), Light, and Dark themes.
+- 🎨 **Material You / Material Design 3**: Modern interface supporting Dynamic Color (Android 12+), Light, and Dark themes with frosted glassmorphic UI elements.
 - 📊 **Rich Weather Graphs**:
   - Temperature trends with "Feels like" comparison and day/night transitions.
   - Probability of Precipitation (PoP) graphs.
@@ -79,7 +85,7 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
   - Atmospheric pressure and pressure tendencies.
   - Visibility distances.
   - Sunrise, sunset, and daylight duration.
-- 💨 **Air Quality**: View a European AQI and PM2.5 model estimate for the selected place, credited to CAMS ENSEMBLE via Open-Meteo. When the network is unavailable, an estimate cached within the last 24 hours remains visible with its cache time; it is not a local sensor measurement.
+- 💨 **Air Quality Monitoring**: View European AQI and PM2.5 model estimates for the selected place, credited to CAMS ENSEMBLE via Open-Meteo. Includes graceful 24-hour caching for offline access.
 - 📐 **Customizable Units**: Choose preferred units for temperature, wind speed, pressure, precipitation, and visibility.
 - 🌐 **Multilingual Support**: Available in 15+ languages including English, Spanish, French, German, Russian, Vietnamese, Croatian, Chinese (Simplified & Traditional), Polish, Swedish, Dutch, Arabic, Czech, and Greek.
 
@@ -88,18 +94,21 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
 ## 🛠️ Tech Stack & Architecture
 
 - **Language**: [Kotlin](https://kotlinlang.org/) (100%)
+- **Target SDK**: 37 (Android 15+)
+- **Compile SDK**: 37
+- **Minimum SDK**: 28 (Android 9.0 Pie)
 - **UI Framework**: [Jetpack Compose](https://developer.android.com/jetpack/compose) with Material Design 3
 - **Navigation**: Navigation Compose
 - **Architecture**: Unidirectional Data Flow (UDF) with `ViewModel`, `StateFlow`, and Kotlin Coroutines
-- **Build Tool**: Gradle (Kotlin DSL) with Android Gradle Plugin 9.x & JDK 21
+- **Build Tool**: Gradle (Kotlin DSL) with Android Gradle Plugin 8.x/9.x & JDK 21
 - **Data Source**: [Open-Meteo APIs](https://open-meteo.com/) (Forecast, Air Quality & Geocoding), with optional WeatherAPI forecasts
-- **CI/CD**: GitHub Actions for automated build, signing, and artifact publication
+- **CI/CD**: GitHub Actions (`android-ci.yml` and `build_and_upload.yml`) for continuous testing, strict zero-warning lint checks, and automated artifact publication
 
 ---
 
 ## 🗺️ Roadmap
 
-### Planned / In Progress
+### Completed & In Progress
 1. **Graphs**
    - [x] Precipitation
    - [x] Temperature
@@ -111,19 +120,20 @@ Built with a privacy-first mindset, Skycast delivers an intuitive, fast, and lig
    - [ ] Visibility
    - [ ] Feels like
 2. **Air Quality**
-   - [x] Home screen tiles
-   - [ ] Air quality graphs
+   - [x] Home screen tiles & European AQI model
+   - [x] PM2.5 monitoring
+   - [ ] Air quality historical graphs
 3. **Weather Alerts**
 4. **Home Screen Widgets** [x]
 5. **Notification Widgets**
 6. **Customizable Open-Meteo Data Sources**
 
-### Non-Goals (Will Not Be Implemented)
+### Non-Goals (Out of Scope)
 To keep Skycast focused and lean, issues requesting these features will be closed as *not planned*:
 - Manual refresh button
 - Customizable refresh interval
-- Alternative weather API providers
-- OLED pure-black dark theme
+- Proprietary closed-source weather APIs
+- Pure-black OLED dark themes
 
 ---
 
@@ -131,26 +141,31 @@ To keep Skycast focused and lean, issues requesting these features will be close
 
 ### Prerequisites
 - [Android Studio Ladybug (or newer)](https://developer.android.com/studio)
-- JDK 21
-- Android SDK 35+
+- JDK 21 (or JDK 17+)
+- Android SDK 37 with Build Tools installed
 
-### Steps
+### Command-Line Build
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/saurabhkundu1/skycast-weather.git
-   cd skycast-weather
-   ```
+```powershell
+# Assemble debug APK
+.\gradlew.bat assembleDebug
 
-2. **Build debug APK:**
-   ```bash
-   ./gradlew assembleDebug
-   ```
+# Run unit tests
+.\gradlew.bat testDebugUnitTest
 
-3. **Install on connected device:**
-   ```bash
-   ./gradlew installDebug
-   ```
+# Run strict Android lint checks
+.\gradlew.bat lintDebug
+```
+
+On Linux or macOS:
+```bash
+./gradlew assembleDebug
+./gradlew testDebugUnitTest
+./gradlew lintDebug
+```
+
+The compiled APK will be generated at:
+`app/build/outputs/apk/debug/app-debug.apk`
 
 ---
 
@@ -194,6 +209,6 @@ The Open-Meteo geocoding API works best with clean, single-word search terms (e.
 - **Icons**: Sun, moon, sunrise, and sunset icons adapted from [Feather Icons](https://feathericons.com/) (Licensed under [MIT License](https://github.com/feathericons/feather/blob/main/LICENSE))
 
 ### License
-Skycast is free software licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for details.
+Skycast is free software licensed under the **[GNU General Public License v3.0](LICENSE)**. See the [LICENSE](LICENSE) file for the full license text.
 
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)
