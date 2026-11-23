@@ -22,6 +22,7 @@ android {
     defaultConfig {
         applicationId = "com.applify.skycast"
         minSdk = 28
+        targetSdk = 37
         versionCode = 2
         versionName = "1.0.1"
 
@@ -90,7 +91,8 @@ android {
     }
 
     lint {
-        disable += "AndroidGradlePluginVersion"
+        warningsAsErrors = true
+        disable += listOf("AndroidGradlePluginVersion", "GradleDependency", "NewerVersionAvailable")
     }
 }
 

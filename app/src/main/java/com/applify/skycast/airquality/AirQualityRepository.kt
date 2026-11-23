@@ -7,6 +7,7 @@
 package com.applify.skycast.airquality
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.applify.skycast.forecast.download.InternetChecker
 import com.applify.skycast.places.Location
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +62,9 @@ class AirQualityRepository(
     )
 
     private fun writeCaches(caches: Map<String, AirQualityReading>) {
-        preferences.edit().putString(CACHE_KEY, encodeAirQualityCaches(caches)).apply()
+        preferences.edit {
+            putString(CACHE_KEY, encodeAirQualityCaches(caches))
+        }
     }
 
     private suspend fun download(location: Location): AirQualityReading? = withContext(Dispatchers.IO) {
