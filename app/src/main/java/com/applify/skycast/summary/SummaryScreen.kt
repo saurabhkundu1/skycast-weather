@@ -42,7 +42,9 @@ import com.applify.skycast.places.Place
 import com.applify.skycast.places.picker.PlacePickerState
 import com.applify.skycast.places.picker.compose.PlacePickerSearchBar
 import com.applify.skycast.places.search.SearchedPlace
+import com.applify.skycast.summary.comfort.compose.OutdoorComfortCard
 import com.applify.skycast.summary.daily.compose.DailySummaryColumn
+import com.applify.skycast.summary.comfort.compose.OutdoorComfortCard
 import com.applify.skycast.summary.daily.compose.DailySummaryColumnSkeleton
 import com.applify.skycast.summary.airquality.compose.AirQualitySummary
 import com.applify.skycast.summary.feelslike.compose.FeelsLikeSummary
@@ -191,6 +193,13 @@ private fun SummaryGrid(
             DailySummaryColumn(
                 state = state.daily,
                 onDayClick = onDayClick,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        item(span = StaggeredGridItemSpan.FullLine) {
+            OutdoorComfortCard(
+                state = state,
+                airQuality = airQuality,
                 modifier = Modifier.fillMaxWidth()
             )
         }

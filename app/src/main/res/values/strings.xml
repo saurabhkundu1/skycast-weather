@@ -266,4 +266,11 @@
     <string name="air_quality_band_poor">Poor</string>
     <string name="air_quality_band_very_poor">Very poor</string>
     <string name="air_quality_band_extremely_poor">Extremely poor</string>
+    <string name="outdoor_comfort_title" translatable="false">Outdoor Comfort &amp; Insights</string>
+    <string name="outdoor_comfort_running" translatable="false">Running</string>
+    <string name="outdoor_comfort_cycling" translatable="false">Cycling</string>
+    <string name="outdoor_comfort_walking" translatable="false">Walking</string>
+    <string name="outdoor_comfort_optimal" translatable="false">Optimal</string>
+    <string name="outdoor_comfort_good" translatable="false">Good</string>
+    <string name="outdoor_comfort_caution" translatable="false">Caution</string>
 </resources>
