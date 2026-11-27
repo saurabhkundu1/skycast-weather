@@ -24,9 +24,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.Alignment
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -137,51 +140,61 @@ fun PlacePickerSearchBar(
             .distinctUntilChanged()
             .collect(onQueryChange)
     }
-    val horizontalPadding by animateDpAsState(
-        targetValue = if (active) 0.dp else 24.dp,
-        animationSpec = if (active) AnimationEnterFloatSpec else AnimationExitFloatSpec,
-        label = "Search bar horizontal padding"
-    )
-
-    val inputField: @Composable () -> Unit = {
-        SearchBarDefaults.InputField(
-            textFieldState = textFieldState,
-            searchBarState = searchBarState,
-            onSearch = onSearchClick,
-            leadingIcon = {
-                PinOrBackButton(
-                    active = active,
-                    onBackClick = { onActiveChange(false) }
-                )
-            },
-            trailingIcon = {
-                SettingsOrClearButton(
-                    active = active,
-                    onSettingsClick = onSettingsClick,
-                    onClearClick = onQueryClearClick
-                )
-            },
-            placeholder = {
-                Text(
-                    text = stringResource(id = R.string.place_picker_hint_search),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
-            },
-        )
-    }
-
-    SearchBar(
-        state = searchBarState,
-        inputField = inputField,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = horizontalPadding),
-    )
-    ExpandedFullScreenSearchBar(
-        state = searchBarState,
-        inputField = inputField,
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.TopCenter,
     ) {
+        val collapsedPadding = when {
+            maxWidth < 360.dp -> 12.dp
+            maxWidth >= 600.dp -> 24.dp
+            else -> 16.dp
+        }
+        val horizontalPadding by animateDpAsState(
+            targetValue = if (active) 0.dp else collapsedPadding,
+            animationSpec = if (active) AnimationEnterFloatSpec else AnimationExitFloatSpec,
+            label = "Search bar horizontal padding"
+        )
+
+        val inputField: @Composable () -> Unit = {
+            SearchBarDefaults.InputField(
+                textFieldState = textFieldState,
+                searchBarState = searchBarState,
+                onSearch = onSearchClick,
+                leadingIcon = {
+                    PinOrBackButton(
+                        active = active,
+                        onBackClick = { onActiveChange(false) }
+                    )
+                },
+                trailingIcon = {
+                    SettingsOrClearButton(
+                        active = active,
+                        onSettingsClick = onSettingsClick,
+                        onClearClick = onQueryClearClick
+                    )
+                },
+                placeholder = {
+                    Text(
+                        text = stringResource(id = R.string.place_picker_hint_search),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                },
+            )
+        }
+
+        SearchBar(
+            state = searchBarState,
+            inputField = inputField,
+            modifier = Modifier
+                .widthIn(max = 960.dp)
+                .fillMaxWidth()
+                .padding(horizontal = horizontalPadding),
+        )
+        ExpandedFullScreenSearchBar(
+            state = searchBarState,
+            inputField = inputField,
+        ) {
         Column {
             TextButton(
                 onClick = {
@@ -235,6 +248,7 @@ fun PlacePickerSearchBar(
                     )
                 else -> Unit
             }
+        }
         }
     }
 }

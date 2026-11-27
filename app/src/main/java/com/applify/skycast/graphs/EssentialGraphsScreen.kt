@@ -13,6 +13,7 @@
 package com.applify.skycast.graphs
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -20,6 +21,8 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.Alignment
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -91,39 +94,52 @@ fun EssentialGraphsScreen(
             label = "State crossfade"
         ) {
             val bottomContentPadding = contentPadding.calculateBottomPadding()
-            val pageContentPadding = PaddingValues(
-                start = 16.dp,
-                end = 16.dp,
-                top = 16.dp,
-                bottom = bottomContentPadding + 16.dp,
-            )
-            when (it) {
-                is EssentialGraphsState.Success -> Pager(
-                    state = it,
-                    initialDay = initialDay,
-                    pageContentPadding = pageContentPadding,
-                    modifier = Modifier.fillMaxSize()
+            BoxWithConstraints(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                val horizontalPad = when {
+                    maxWidth < 360.dp -> 12.dp
+                    maxWidth >= 600.dp -> 24.dp
+                    else -> 16.dp
+                }
+                val pageContentPadding = PaddingValues(
+                    start = horizontalPad,
+                    end = horizontalPad,
+                    top = 16.dp,
+                    bottom = bottomContentPadding + 16.dp,
                 )
+                val constrainedModifier = Modifier
+                    .widthIn(max = 960.dp)
+                    .fillMaxSize()
+                when (it) {
+                    is EssentialGraphsState.Success -> Pager(
+                        state = it,
+                        initialDay = initialDay,
+                        pageContentPadding = pageContentPadding,
+                        modifier = constrainedModifier
+                    )
 
-                EssentialGraphsState.Loading, EssentialGraphsState.Initial -> EssentialGraphsLoadingIndicator(
-                    pageContentPadding = pageContentPadding,
-                    modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize()
-                )
+                    EssentialGraphsState.Loading, EssentialGraphsState.Initial -> EssentialGraphsLoadingIndicator(
+                        pageContentPadding = pageContentPadding,
+                        modifier = constrainedModifier.padding(bottom = bottomContentPadding)
+                    )
 
-                EssentialGraphsState.FailedToDownload -> FailedToDownloadErrorScreen(
-                    modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
-                    onTryAgainClick = onTryAgainClick
-                )
+                    EssentialGraphsState.FailedToDownload -> FailedToDownloadErrorScreen(
+                        modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
+                        onTryAgainClick = onTryAgainClick
+                    )
 
-                EssentialGraphsState.Outdated -> OutdatedErrorScreen(
-                    modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
-                    onTryAgainClick = onTryAgainClick
-                )
+                    EssentialGraphsState.Outdated -> OutdatedErrorScreen(
+                        modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
+                        onTryAgainClick = onTryAgainClick
+                    )
 
-                EssentialGraphsState.NoSelectedPlace -> NoSelectedPlaceErrorScreen(
-                    modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
-                    onSelectPlaceClick = onSelectPlaceClick
-                )
+                    EssentialGraphsState.NoSelectedPlace -> NoSelectedPlaceErrorScreen(
+                        modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
+                        onSelectPlaceClick = onSelectPlaceClick
+                    )
+                }
             }
         }
     }

@@ -71,11 +71,12 @@ fun SummaryTile(
                 )
             }
         }
+        val minTileHeight = minWidth.coerceIn(144.dp, 200.dp)
         if (onClick != null) {
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = minWidth),
+                    .heightIn(min = minTileHeight),
                 tonalElevation = 1.dp,
                 shape = MaterialTheme.shapes.medium,
                 onClick = onClick,
@@ -85,7 +86,7 @@ fun SummaryTile(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = minWidth),
+                    .heightIn(min = minTileHeight),
                 tonalElevation = 1.dp,
                 shape = MaterialTheme.shapes.medium,
                 content = content

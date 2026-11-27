@@ -92,8 +92,16 @@ fun NowSummary(
     modifier: Modifier = Modifier,
     date: (@Composable () -> Unit)? = null,
 ) {
-    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier) {
-        Column {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top,
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .padding(end = 12.dp)
+        ) {
             date?.let {
                 CompositionLocalProvider(
                     LocalTextStyle provides MaterialTheme.typography.titleMedium,
@@ -123,7 +131,10 @@ fun NowSummary(
                 content = highLow
             )
         }
-        Column(horizontalAlignment = Alignment.End) {
+        Column(
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier.weight(1f, fill = false)
+        ) {
             CompositionLocalProvider(
                 LocalTextStyle provides MaterialTheme.typography.bodyLarge,
                 content = condition

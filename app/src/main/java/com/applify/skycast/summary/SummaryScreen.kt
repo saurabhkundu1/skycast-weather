@@ -14,12 +14,15 @@ package com.applify.skycast.summary
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -28,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
@@ -42,11 +46,10 @@ import com.applify.skycast.places.Place
 import com.applify.skycast.places.picker.PlacePickerState
 import com.applify.skycast.places.picker.compose.PlacePickerSearchBar
 import com.applify.skycast.places.search.SearchedPlace
+import com.applify.skycast.summary.airquality.compose.AirQualitySummary
 import com.applify.skycast.summary.comfort.compose.OutdoorComfortCard
 import com.applify.skycast.summary.daily.compose.DailySummaryColumn
-import com.applify.skycast.summary.comfort.compose.OutdoorComfortCard
 import com.applify.skycast.summary.daily.compose.DailySummaryColumnSkeleton
-import com.applify.skycast.summary.airquality.compose.AirQualitySummary
 import com.applify.skycast.summary.feelslike.compose.FeelsLikeSummary
 import com.applify.skycast.summary.hourly.compose.HourSummaryLazyRow
 import com.applify.skycast.summary.hourly.compose.HourSummaryLazyRowSkeleton
@@ -116,44 +119,70 @@ fun SummaryScreen(
                 .padding(top = 8.dp)
                 .fillMaxSize(),
             label = "Grid crossfade"
-        ) {
+        ) { state ->
             val bottomContentPadding = contentPadding.calculateBottomPadding()
-            val gridContentPadding = PaddingValues(
-                start = 16.dp,
-                end = 16.dp,
-                top = 8.dp,
-                bottom = bottomContentPadding + 16.dp,
-            )
-            when (it) {
-                is SummaryState.Success -> SummaryGrid(
-                    state = it,
-                    airQuality = airQuality,
-                    onHourlyClick = onHourlySectionClick,
-                    onDayClick = onDayClick,
-                    onPrecipitationClick = onPrecipitationClick,
-                    contentPadding = gridContentPadding,
-                    modifier = Modifier.fillMaxSize()
+            BoxWithConstraints(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                val isCompactWidth = maxWidth < 360.dp
+                val isWideOrLandscape = maxWidth >= 600.dp || (maxWidth > maxHeight && maxWidth >= 480.dp)
+                val columnCount = when {
+                    maxWidth < 340.dp -> 1
+                    maxWidth < 600.dp -> 2
+                    maxWidth < 840.dp -> 3
+                    else -> 4
+                }
+                val horizontalPad = when {
+                    isCompactWidth -> 12.dp
+                    isWideOrLandscape -> 24.dp
+                    else -> 16.dp
+                }
+                val gridSpacing = if (isCompactWidth) 12.dp else 16.dp
+                val gridContentPadding = PaddingValues(
+                    start = horizontalPad,
+                    end = horizontalPad,
+                    top = 8.dp,
+                    bottom = bottomContentPadding + 16.dp,
                 )
+                val constrainedModifier = Modifier
+                    .widthIn(max = 960.dp)
+                    .fillMaxSize()
 
-                SummaryState.Loading, SummaryState.Initial -> SummaryScreenSkeleton(
-                    contentPadding = gridContentPadding,
-                    modifier = Modifier.fillMaxSize()
-                )
+                when (state) {
+                    is SummaryState.Success -> SummaryGrid(
+                        state = state,
+                        airQuality = airQuality,
+                        columnCount = columnCount,
+                        spacing = gridSpacing,
+                        onHourlyClick = onHourlySectionClick,
+                        onDayClick = onDayClick,
+                        onPrecipitationClick = onPrecipitationClick,
+                        contentPadding = gridContentPadding,
+                        modifier = constrainedModifier
+                    )
 
-                SummaryState.FailedToDownload -> FailedToDownloadErrorScreen(
-                    modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
-                    onTryAgainClick = onTryAgainClick
-                )
+                    SummaryState.Loading, SummaryState.Initial -> SummaryScreenSkeleton(
+                        spacing = gridSpacing,
+                        contentPadding = gridContentPadding,
+                        modifier = constrainedModifier
+                    )
 
-                SummaryState.Outdated -> OutdatedErrorScreen(
-                    modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
-                    onTryAgainClick = onTryAgainClick
-                )
+                    SummaryState.FailedToDownload -> FailedToDownloadErrorScreen(
+                        modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
+                        onTryAgainClick = onTryAgainClick
+                    )
 
-                SummaryState.NoSelectedPlace -> NoSelectedPlaceErrorScreen(
-                    modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
-                    onSelectPlaceClick = onSelectPlaceClick
-                )
+                    SummaryState.Outdated -> OutdatedErrorScreen(
+                        modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
+                        onTryAgainClick = onTryAgainClick
+                    )
+
+                    SummaryState.NoSelectedPlace -> NoSelectedPlaceErrorScreen(
+                        modifier = Modifier.padding(bottom = bottomContentPadding).fillMaxSize(),
+                        onSelectPlaceClick = onSelectPlaceClick
+                    )
+                }
             }
         }
     }
@@ -163,6 +192,8 @@ fun SummaryScreen(
 private fun SummaryGrid(
     state: SummaryState.Success,
     airQuality: AirQualityReading?,
+    columnCount: Int,
+    spacing: androidx.compose.ui.unit.Dp,
     onHourlyClick: () -> Unit,
     onDayClick: (date: LocalDate) -> Unit,
     onPrecipitationClick: () -> Unit,
@@ -171,9 +202,9 @@ private fun SummaryGrid(
 ) {
     LazyVerticalStaggeredGrid(
         modifier = modifier,
-        verticalItemSpacing = 16.dp,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        columns = StaggeredGridCells.Fixed(2),
+        verticalItemSpacing = spacing,
+        horizontalArrangement = Arrangement.spacedBy(spacing),
+        columns = StaggeredGridCells.Fixed(columnCount),
         contentPadding = contentPadding,
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
@@ -272,13 +303,14 @@ private fun SummaryGrid(
 
 @Composable
 private fun SummaryScreenSkeleton(
+    spacing: androidx.compose.ui.unit.Dp,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val shimmerColor = animateShimmerColorAsState()
     LazyColumn(
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(spacing),
         modifier = modifier
     ) {
         item {

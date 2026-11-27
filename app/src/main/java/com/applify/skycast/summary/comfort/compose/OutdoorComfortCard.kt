@@ -14,6 +14,8 @@ package com.applify.skycast.summary.comfort.compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.applify.skycast.R
@@ -38,6 +41,7 @@ import com.applify.skycast.forecast.parameters.wind.string
 import com.applify.skycast.summary.SummaryState
 import kotlin.math.roundToInt
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun OutdoorComfortCard(
     state: SummaryState.Success,
@@ -132,14 +136,16 @@ fun OutdoorComfortCard(
                 )
             }
 
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
                     text = "Feels $feelsTemp · Wind $windSpeed",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(end = 8.dp)
                 )
                 Text(
                     text = "UV $uvValue · Humidity $humidityVal%",
@@ -166,12 +172,16 @@ private fun ActivityBadge(activity: String, status: String, modifier: Modifier =
             Text(
                 text = activity,
                 fontSize = 11.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 text = status,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 color = MaterialTheme.colorScheme.primary
             )
         }
