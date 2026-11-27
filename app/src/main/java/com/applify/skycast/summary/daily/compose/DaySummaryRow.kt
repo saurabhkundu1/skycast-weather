@@ -113,7 +113,7 @@ fun DaySummaryRow(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1.15f)
             ) {
                 DayAndPop(
                     day = {
@@ -140,7 +140,7 @@ fun DaySummaryRow(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(2f)
+                modifier = Modifier.weight(1.85f)
             ) {
                 CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.titleMedium) {
                     val maxTempWidth = rememberMaxTempWidth()
@@ -212,7 +212,7 @@ private fun DayAndPopMaxHeightDummy(modifier: Modifier = Modifier) {
 @Composable
 private fun rememberMaxTempWidth(): Dp {
     val measurer = rememberTextMeasurer()
-    val maxTemp = remember { Temperature(999.0, Temperature.Unit.DegreesCelsius) }
+    val maxTemp = remember { Temperature(-39.0, Temperature.Unit.DegreesCelsius) }
     val density = LocalDensity.current
     val maxTempString = maxTemp.string()
     val textStyle = LocalTextStyle.current

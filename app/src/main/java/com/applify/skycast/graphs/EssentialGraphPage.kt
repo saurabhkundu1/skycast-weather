@@ -16,11 +16,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -54,7 +56,6 @@ import com.applify.skycast.graphs.temperature.compose.TemperatureGraphSummary
 import com.applify.skycast.summary.now.compose.NowSummarySkeleton
 import java.time.Instant
 
-private const val graphAspectRatio = 4f / 3f
 private val verticalSpacing = 24.dp
 private val graphLabelSpacing = 8.dp
 
@@ -75,75 +76,65 @@ fun EssentialGraphPage(
     precipMax: MixedPrecipitation,
     precipitationTotal: PrecipitationTotal
 ) {
-    LazyColumn(
-        state = listState,
-        verticalArrangement = Arrangement.spacedBy(verticalSpacing),
-        contentPadding = contentPadding,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        item {
-            TemperatureGraphSummary(
-                state = summary,
-                modifier = Modifier.fillMaxWidth()
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val graphAspectRatio = if (maxWidth >= 500.dp || maxWidth > maxHeight) 2.1f else 4f / 3f
+        val maxGraphHeight = (maxHeight * 0.52f).coerceIn(180.dp, 320.dp)
+        val graphModifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 180.dp, max = maxGraphHeight)
+            .aspectRatio(graphAspectRatio)
+            .border(
+                width = Dp.Hairline,
+                shape = MaterialTheme.shapes.large,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        }
-        item {
-            TemperatureGraph(
-                now = now,
-                points = temperatureGraph.points,
-                min = minTemp,
-                max = maxTemp,
-                args = temperatureArgs,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(graphAspectRatio)
-                    .border(
-                        width = Dp.Hairline,
-                        shape = MaterialTheme.shapes.large,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+            .clip(MaterialTheme.shapes.large)
+
+        LazyColumn(
+            state = listState,
+            verticalArrangement = Arrangement.spacedBy(verticalSpacing),
+            contentPadding = contentPadding,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            item {
+                TemperatureGraphSummary(
+                    state = summary,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                TemperatureGraph(
+                    now = now,
+                    points = temperatureGraph.points,
+                    min = minTemp,
+                    max = maxTemp,
+                    args = temperatureArgs,
+                    modifier = graphModifier
+                )
+            }
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(graphLabelSpacing)) {
+                    GraphScreenSectionLabel(stringResource(R.string.cond_screen_pop))
+                    PopGraph(
+                        now = now,
+                        points = popGraph.points,
+                        args = popArgs,
+                        modifier = graphModifier
                     )
-                    .clip(MaterialTheme.shapes.large)
-            )
-        }
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(graphLabelSpacing)) {
-                GraphScreenSectionLabel(stringResource(R.string.cond_screen_pop))
-                PopGraph(
-                    now = now,
-                    points = popGraph.points,
-                    args = popArgs,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(graphAspectRatio)
-                        .border(
-                            width = Dp.Hairline,
-                            shape = MaterialTheme.shapes.large,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        .clip(MaterialTheme.shapes.large)
-                )
+                }
             }
-        }
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(graphLabelSpacing)) {
-                GraphScreenSectionLabel(stringResource(R.string.cond_screen_precip))
-                PrecipitationGraph(
-                    now = now,
-                    points = precipGraph.points,
-                    max = precipMax,
-                    args = precipArgs,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(graphAspectRatio)
-                        .border(
-                            width = Dp.Hairline,
-                            shape = MaterialTheme.shapes.large,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        .clip(MaterialTheme.shapes.large)
-                )
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(graphLabelSpacing)) {
+                    GraphScreenSectionLabel(stringResource(R.string.cond_screen_precip))
+                    PrecipitationGraph(
+                        now = now,
+                        points = precipGraph.points,
+                        max = precipMax,
+                        args = precipArgs,
+                        modifier = graphModifier
+                    )
+                }
             }
-        }
         item {
             when (precipitationTotal) {
                 is PrecipitationTotal.OtherDay -> PrecipitationBullets(
@@ -157,12 +148,13 @@ fun EssentialGraphPage(
                 )
             }
         }
-        item {
-            Text(
-                text = stringResource(id = R.string.credit_weather) + "\n" + stringResource(id = R.string.weather_data_disclaimer),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            item {
+                Text(
+                    text = stringResource(id = R.string.credit_weather) + "\n" + stringResource(id = R.string.weather_data_disclaimer),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }
@@ -173,40 +165,40 @@ fun EssentialGraphPageLoadingIndicator(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(verticalSpacing),
-        userScrollEnabled = false,
-        contentPadding = contentPadding
-    ) {
-        item {
-            NowSummarySkeleton(
-                color = shimmerColor,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(graphAspectRatio)
-                    .background(shape = MaterialTheme.shapes.large, color = shimmerColor.value),
-            )
-        }
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(graphLabelSpacing)) {
-                TextSkeleton(
+    BoxWithConstraints(modifier = modifier) {
+        val graphAspectRatio = if (maxWidth >= 500.dp || maxWidth > maxHeight) 2.1f else 4f / 3f
+        val maxGraphHeight = (maxHeight * 0.52f).coerceIn(180.dp, 320.dp)
+        val skeletonGraphModifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 180.dp, max = maxGraphHeight)
+            .aspectRatio(graphAspectRatio)
+            .background(shape = MaterialTheme.shapes.large, color = shimmerColor.value)
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(verticalSpacing),
+            userScrollEnabled = false,
+            contentPadding = contentPadding
+        ) {
+            item {
+                NowSummarySkeleton(
                     color = shimmerColor,
-                    shape = MaterialTheme.shapes.small,
-                    style = MaterialTheme.typography.titleSmall,
-                    modifier = Modifier.width(160.dp)
+                    modifier = Modifier.fillMaxWidth()
                 )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(graphAspectRatio)
-                        .background(shape = MaterialTheme.shapes.large, color = shimmerColor.value),
-                )
+            }
+            item {
+                Box(modifier = skeletonGraphModifier)
+            }
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(graphLabelSpacing)) {
+                    TextSkeleton(
+                        color = shimmerColor,
+                        shape = MaterialTheme.shapes.small,
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.width(160.dp)
+                    )
+                    Box(modifier = skeletonGraphModifier)
+                }
             }
         }
     }

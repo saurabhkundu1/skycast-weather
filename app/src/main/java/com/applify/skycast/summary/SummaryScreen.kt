@@ -17,11 +17,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -90,6 +92,7 @@ fun SummaryScreen(
     onSelectPlaceClick: () -> Unit,
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             PlacePickerSearchBar(
                 state = pickerState,
@@ -125,20 +128,22 @@ fun SummaryScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.TopCenter,
             ) {
-                val isCompactWidth = maxWidth < 360.dp
+                val isCompactWidth = maxWidth < 380.dp
+                val aspectRatio = if (maxHeight > 0.dp) maxWidth / maxHeight else 0.5f
+                val isTallPhone = aspectRatio < 0.52f
                 val isWideOrLandscape = maxWidth >= 600.dp || (maxWidth > maxHeight && maxWidth >= 480.dp)
                 val columnCount = when {
-                    maxWidth < 340.dp -> 1
-                    maxWidth < 600.dp -> 2
+                    maxWidth < 320.dp -> 1
+                    maxWidth < 580.dp -> 2
                     maxWidth < 840.dp -> 3
                     else -> 4
                 }
                 val horizontalPad = when {
-                    isCompactWidth -> 12.dp
+                    isCompactWidth || isTallPhone -> 12.dp
                     isWideOrLandscape -> 24.dp
                     else -> 16.dp
                 }
-                val gridSpacing = if (isCompactWidth) 12.dp else 16.dp
+                val gridSpacing = if (isCompactWidth || isTallPhone) 12.dp else 16.dp
                 val gridContentPadding = PaddingValues(
                     start = horizontalPad,
                     end = horizontalPad,
