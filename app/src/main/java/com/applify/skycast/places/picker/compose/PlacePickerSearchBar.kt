@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -187,6 +188,7 @@ fun PlacePickerSearchBar(
             state = searchBarState,
             inputField = inputField,
             modifier = Modifier
+                .statusBarsPadding()
                 .widthIn(max = 960.dp)
                 .fillMaxWidth()
                 .padding(horizontal = horizontalPadding),

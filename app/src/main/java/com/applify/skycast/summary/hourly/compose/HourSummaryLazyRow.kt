@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -68,8 +69,11 @@ fun HourSummaryLazyRow(
             )
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
-                contentPadding = PaddingValues(contentPadding),
-                modifier = Modifier.height(dummyHeight + contentPadding * 2)
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = contentPadding),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .height(dummyHeight + contentPadding * 2)
             ) {
                 items(state) {
                     when (it) {
